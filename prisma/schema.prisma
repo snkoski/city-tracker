@@ -8,6 +8,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum PlaceType {
+  BREWERY
+  RESTAURANT
+  MUSIC_VENUE
+  MUSEUM
+  COWORKING
+  AIRPORT
+}
+
 model State {
   id            Int      @id @default(autoincrement())
   name          String   @unique
@@ -94,13 +103,4 @@ model Event {
   ticketUrl String?   @map("ticket_url")
   city      City?     @relation(fields: [cityID], references: [id])
   place     Place?    @relation(fields: [placeId], references: [id])
-}
-
-enum PlaceType {
-  BREWERY
-  RESTAURANT
-  MUSIC_VENUE
-  MUSEUM
-  COWORKING
-  AIRPORT
 }

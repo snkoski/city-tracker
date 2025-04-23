@@ -1,17 +1,14 @@
 import { useState, useEffect } from 'react';
+import { City, State } from '@prisma/client';
+import '../App.css';
 
-interface City {
-  id: number;
-  name: string;
-  country: string;
-  state?: string;
-  population?: number;
-  area?: number;
-  notes?: string;
+interface CityListProps {
+  onCitySelect: (city: City & { state: State }) => void;
 }
 
-export default function CityList() {
-  const [cities, setCities] = useState<City[]>([]);
+export default function CityList({ onCitySelect }: CityListProps) {
+  const [isOpen, setIsOpen] = useState(true);
+  const [cities, setCities] = useState<(City & { state: State })[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -32,32 +29,24 @@ export default function CityList() {
   }, []);
 
   if (error) {
-    return <div className="text-red-600">Error: {error}</div>;
+    return <div className="">Error: {error}</div>;
   }
 
   return (
-    <div className="max-w-2xl mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">Cities</h2>
-      <div className="space-y-4">
+    <div className={`slideout ${isOpen ? 'open' : ''}`}>
+      <h2 className="">Cities</h2>
+      <button className="slideout-btn" type="button" onClick={() => setIsOpen(!isOpen)}>
+        {isOpen ? '<' : '>'}
+      </button>
+      <div className="">
         {cities.map((city) => (
-          <div
-            key={city.id}
-            className="border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
-          >
-            <h3 className="text-xl font-semibold">{city.name}</h3>
-            <p className="text-gray-600">
-              {city.country}
-              {city.state && `, ${city.state}`}
-            </p>
-            {city.population && (
-              <p className="text-sm text-gray-500">
-                Population: {city.population.toLocaleString()}
-              </p>
-            )}
-            {city.area && (
-              <p className="text-sm text-gray-500">Area: {city.area.toLocaleString()} km²</p>
-            )}
-            {city.notes && <p className="mt-2 text-gray-700">{city.notes}</p>}
+          <div key={city.id} className="">
+            <h3 className="cursor-pointer hover:text-blue-500" onClick={() => onCitySelect(city)}>
+              {city.name}
+            </h3>
+            <p className="">{city.state.name}</p>
+            {city.population && <p className="">Population: {city.population.toLocaleString()}</p>}
+            {city.notes && <p className="">{city.notes}</p>}
           </div>
         ))}
       </div>

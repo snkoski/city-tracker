@@ -14,8 +14,8 @@ export enum PlaceType {
 export interface State {
   id: number;
   name: string;
-  incomeTaxRate?: number; // Decimal in Prisma, number in TypeScript
-  population?: number;
+  incomeTaxRate: number | null; // Decimal in Prisma, number in TypeScript
+  population: number | null;
   cities: City[];
 }
 
@@ -24,8 +24,8 @@ export interface City {
   id: number;
   name: string;
   stateId: number;
-  population?: number;
-  salesTaxRate?: number; // Decimal in Prisma, number in TypeScript
+  population: number | null;
+  salesTaxRate: number | null; // Decimal in Prisma, number in TypeScript
   subreddit: string | null;
   naturalDisasters: string | null;
   crimeRate: number | null; // Decimal in Prisma, number in TypeScript

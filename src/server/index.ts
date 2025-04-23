@@ -10,9 +10,15 @@ app.use(express.json());
 
 app.get('/api/cities', async (req, res) => {
   try {
-    const cities = await prisma.city.findMany({});
-    console.log('RES', res);
-
+    const cities = await prisma.city.findMany({
+      include: {
+        state: true,
+        neighborhoods: true
+      },
+      orderBy: {
+        name: 'asc'
+      }
+    });
     res.json(cities);
   } catch (error) {
     console.error('Error fetching cities:', error);
