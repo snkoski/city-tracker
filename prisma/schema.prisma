@@ -15,6 +15,7 @@ enum PlaceType {
   MUSEUM
   COWORKING
   AIRPORT
+  PAPA_MURPHYS
 }
 
 model State {
@@ -22,27 +23,44 @@ model State {
   name          String   @unique
   incomeTaxRate Decimal? @map("income_tax_rate")
   population    Int?
-  cities        City[]
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  cities City[]
+
+  @@map("states")
 }
 
 model City {
-  id               Int              @id @default(autoincrement())
-  name             String
-  stateId          Int              @map("state_id")
-  population       Int?
-  salesTaxRate     Decimal?         @map("sales_tax_rate")
-  subreddit        String?
-  naturalDisasters String?          @map("natural_disasters")
-  crimeRate        Decimal?         @map("crime_rate")
-  walkabilityScore Int?             @map("walkability_score")
-  notes            String?
-  createdAt        DateTime         @default(now()) @map("created_at")
-  updatedAt        DateTime         @updatedAt @map("updated_at")
-  events           Event[]
-  monthlyWeather   MonthlyWeather[]
-  places           Place[]
-  state            State            @relation(fields: [stateId], references: [id])
-  neighborhoods    Neighborhood[]
+  id                    Int      @id @default(autoincrement())
+  name                  String
+  stateId               Int      @map("state_id")
+  population            Int?
+  salesTaxRate          Decimal? @map("sales_tax_rate")
+  subreddit             String?
+  naturalDisasters      String?  @map("natural_disasters")
+  violentCrimeRate      Decimal? @map("violent_crime_rate")
+  propertyCrimeRate     Decimal? @map("property_crime_rate")
+  lifeExpectancy        Int?     @map("life_expectancy")
+  medianIncome          Int?     @map("median_income")
+  medianHouseholdIncome Int?     @map("median_household_income")
+  walkabilityScore      Int?     @map("walkability_score")
+  bikeScore             Int?     @map("bike_score")
+  transitScore          Int?     @map("transit_score")
+  shoolRating           Int?     @map("schoolRating")
+  notes                 String?
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  events             Event[]
+  monthlyWeather     MonthlyWeather[]
+  places             Place[]
+  neighborhoods      Neighborhood[]
+  ageDemographics    AgeDemographic[]
+  ethnicDemographics EthnicDemographic[]
+  airports           Airport[]
+
+  state State @relation(fields: [stateId], references: [id])
 
   @@map("cities")
 }
@@ -55,39 +73,56 @@ model Neighborhood {
   area             Float?
   description      String?
   walkabilityScore Int?     @map("walkability_score")
+  bikeScore        Int?     @map("bike_score")
+  transitScore     Int?     @map("transit_score")
+  schoolRating     Int?     @map("school_rating")
+  notes            String?
   createdAt        DateTime @default(now()) @map("created_at")
   updatedAt        DateTime @updatedAt @map("updated_at")
-  places           Place[]
-  city             City     @relation(fields: [cityId], references: [id])
+
+  places Place[]
+
+  city City @relation(fields: [cityId], references: [id])
 
   @@map("neighborhoods")
 }
 
 model MonthlyWeather {
-  id              Int     @id @default(autoincrement())
-  cityId          Int     @map("city_id")
+  id              Int      @id @default(autoincrement())
+  cityId          Int      @map("city_id")
   month           Int
-  avgHighTempF    Decimal @map("avg_high_temp_f")
-  avgLowTempF     Decimal @map("avg_low_temp_f")
-  avgTempF        Decimal @map("avg_temp_f")
-  avgRainfallInch Decimal @map("avgrainfall_inch")
-  city            City    @relation(fields: [cityId], references: [id])
+  avgHighTempF    Decimal? @map("avg_high_temp_f")
+  avgLowTempF     Decimal? @map("avg_low_temp_f")
+  avgTempF        Decimal? @map("avg_temp_f")
+  avgRainfallInch Decimal? @map("avgrainfall_inch")
+  humiditiy       Decimal?
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  city City @relation(fields: [cityId], references: [id])
 
   @@unique([cityId, month])
+  @@map("monthly_weather")
 }
 
 model Place {
-  id             Int           @id @default(autoincrement())
-  cityId         Int           @map("city_id")
+  id             Int       @id @default(autoincrement())
+  cityId         Int       @map("city_id")
   name           String
   type           PlaceType
-  neighborhoodId Int?          @map("neighborhood_id")
+  neighborhoodId Int?      @map("neighborhood_id")
   address        String
   website        String?
   description    String?
-  events         Event[]
-  city           City          @relation(fields: [cityId], references: [id])
-  neighborhood   Neighborhood? @relation(fields: [neighborhoodId], references: [id])
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  events Event[]
+
+  city         City          @relation(fields: [cityId], references: [id])
+  neighborhood Neighborhood? @relation(fields: [neighborhoodId], references: [id])
+
+  @@map("places")
 }
 
 model Event {
@@ -101,6 +136,68 @@ model Event {
   details   String?
   website   String?
   ticketUrl String?   @map("ticket_url")
-  city      City?     @relation(fields: [cityID], references: [id])
-  place     Place?    @relation(fields: [placeId], references: [id])
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+
+  city  City?  @relation(fields: [cityID], references: [id])
+  place Place? @relation(fields: [placeId], references: [id])
+
+  @@map("events")
+}
+
+model AgeDemographic {
+  id        Int      @id @default(autoincrement())
+  cityId    Int      @map("city_id")
+  ageRange  String   @map("age_range")
+  percent   Decimal
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  city City @relation(fields: [cityId], references: [id])
+
+  @@map("age_demographics")
+}
+
+model EthnicDemographic {
+  id        Int      @id @default(autoincrement())
+  cityId    Int      @map("city_id")
+  group     String // e.g. "Hispanic", "Asian", "Black", "White", etc.
+  percent   Decimal // e.g. 23.4
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  city City @relation(fields: [cityId], references: [id])
+
+  @@map("ethnic_demographics")
+}
+
+model Airport {
+  id                Int      @id @default(autoincrement())
+  cityId            Int
+  name              String
+  code              String   @unique // e.g., 'LAX'
+  isInternational   Boolean
+  travelTimeMinutes Int? // time from city center, for example
+  distanceMiles     Float? // distance from city center
+  transitOptions    String? // flyaway, airport shuttles, etc...
+  website           String?
+  description       String?
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  city City @relation(fields: [cityId], references: [id])
+
+  @@map("airports")
+}
+
+model Resource {
+  id          Int      @id @default(autoincrement())
+  title       String // Display name, like "Walk Score"
+  description String? // Optional, e.g. "Provides walkability scores by city"
+  url         String? // Actual link
+  category    String? // Optional, e.g. "Demographics", "Real Estate", etc.
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("resources")
 }
