@@ -1,6 +1,6 @@
 import { City, State, Neighborhood } from '@prisma/client';
 import { useState } from 'react';
-import NeighborhoodDetail from './NeighborhoodDetail';
+import NeighborhoodDetail from '../NeighborhoodDetail';
 
 interface CityDetailProps {
   city: City & {

@@ -1,57 +1,94 @@
-import CityForm from './components/CityForm';
-import CityList from './components/CityList';
-import CityDetail from './components/CityDetail';
+import { useState, useEffect } from 'react';
+import StateContainer from './components/StateContainer';
+import { StateDetails } from './components/StateDetails';
+
+import { State } from './types';
+
 import './App.css';
-import { useEffect, useState } from 'react';
-import { City, State } from '@prisma/client';
 
 function App() {
-  const [darkMode, setColorMode] = useState(false);
-  const [hotdogMode, setHotdogMode] = useState(false);
-  const [selectedCity, setSelectedCity] = useState<(City & { state: State }) | null>(null);
+  // State to store the array of states fetched from the API
+  const [states, setStates] = useState<State[]>([]);
+  // State to handle loading status
+  const [loading, setLoading] = useState(true);
+  // State to handle any errors during fetching
+  const [error, setError] = useState<string | null>(null);
 
+  // useEffect hook to fetch data when the component mounts
   useEffect(() => {
-    document.documentElement.classList.toggle('dark', darkMode);
-  }, [darkMode]);
+    const fetchStates = async () => {
+      try {
+        // Fetch data from the json-server endpoint for states
+        // Make sure your json-server is running and accessible at this URL
+        const response = await fetch('http://localhost:3000/states');
 
-  useEffect(() => {
-    document.documentElement.classList.toggle('hotdog', hotdogMode);
-  }, [hotdogMode]);
+        if (!response.ok) {
+          // If the response is not OK (e.g., 404, 500), throw an error
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setStates(data); // Update the states state with the fetched data
+      } catch (e) {
+        // If an error occurs during fetch, update the error state
+        // Check if 'e' is an instance of Error to safely access e.message
+        if (e instanceof Error) {
+          setError(e.message);
+        } else {
+          // Handle cases where 'e' might not be an Error object
+          setError('An unknown error occurred');
+        }
+        console.error('Failed to fetch states:', e);
+      } finally {
+        // Whether successful or not, set loading to false
+        setLoading(false);
+      }
+    };
 
+    fetchStates(); // Call the function to fetch states
+  }, []); // The empty dependency array [] means this effect runs only once after the initial render
+
+  // Display a loading message while data is being fetched
+  if (loading) {
+    return (
+      <div className="container">
+        <p>Loading states...</p>
+      </div>
+    );
+  }
+
+  // Display an error message if fetching failed
+  if (error) {
+    return (
+      <div className="container">
+        <p>Error fetching states: {error}</p>
+      </div>
+    );
+  }
+
+  // Render the list of states once data is fetched
   return (
-    <>
-      <div className="menu-bar">
-        <button onClick={() => setColorMode(!darkMode)}>
-          Toggle {darkMode ? 'Light' : 'Dark'} Mode
-        </button>
-        <button onClick={() => setHotdogMode(!hotdogMode)}>
-          Toggle {hotdogMode ? 'Be Boring' : 'Have Fun'}
-        </button>
-      </div>
-      <div className="container mx-auto p-4">
-        <h1 className="text-3xl font-bold mb-4">City Tracker</h1>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <div>
-            <CityForm
-              onSubmit={(data) => {
-                console.log('City created successfully:', data);
-                // You can add success handling here (e.g., show a success message, refresh the list, etc.)
-              }}
-            />
-            <CityList onCitySelect={setSelectedCity} />
-          </div>
-          <div>
-            {selectedCity ? (
-              <CityDetail city={selectedCity} />
-            ) : (
-              <div className="text-gray-500 dark:text-gray-400 text-center mt-4">
-                Select a city to view its details
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    </>
+    <div className="App">
+      <header className="App-header">
+        <h1>United States Information</h1>
+      </header>
+      <main className="container">
+        {states.length > 0 ? (
+          states.map((state) => (
+            // Use StateContainer for each state, ensuring a unique key
+            <StateContainer key={state.id}>
+              <StateDetails
+                name={state.name}
+                population={state.population}
+                incomeTaxRate={state.incomeTaxRate}
+              />
+            </StateContainer>
+          ))
+        ) : (
+          // Display a message if no states are found or the array is empty
+          <p>No states found. Ensure your mock server is running and has data.</p>
+        )}
+      </main>
+    </div>
   );
 }
 

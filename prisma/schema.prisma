@@ -59,6 +59,7 @@ model City {
   ageDemographics    AgeDemographic[]
   ethnicDemographics EthnicDemographic[]
   airports           Airport[]
+  allergenLevels     AllergenLevel[]
 
   state State @relation(fields: [stateId], references: [id])
 
@@ -200,4 +201,21 @@ model Resource {
   updatedAt   DateTime @updatedAt @map("updated_at")
 
   @@map("resources")
+}
+
+model AllergenLevel {
+  id      Int  @id @default(autoincrement())
+  cityId  Int
+  month   Int // 1 = January, 12 = December
+  pollen  Int? // scale 0-10
+  dust    Int?
+  mold    Int?
+  ragweed Int?
+  grass   Int?
+  trees   Int?
+
+  city City @relation(fields: [cityId], references: [id])
+
+  @@unique([cityId, month])
+  @@map("alergen_levels")
 }

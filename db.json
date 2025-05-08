@@ -1,0 +1,506 @@
+{
+  "states": [
+    {
+      "id": 1,
+      "name": "California",
+      "incomeTaxRate": 0.093,
+      "population": 39200000,
+      "createdAt": "2024-01-15T10:00:00.000Z",
+      "updatedAt": "2025-03-10T12:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "name": "New York",
+      "incomeTaxRate": 0.0685,
+      "population": 19500000,
+      "createdAt": "2024-02-20T11:00:00.000Z",
+      "updatedAt": "2025-04-01T09:30:00.000Z"
+    }
+  ],
+  "cities": [
+    {
+      "id": 101,
+      "name": "Los Angeles",
+      "stateId": 1,
+      "population": 3800000,
+      "salesTaxRate": 0.095,
+      "subreddit": "r/LosAngeles",
+      "naturalDisasters": "Earthquakes, Wildfires",
+      "violentCrimeRate": 7.5,
+      "propertyCrimeRate": 25.1,
+      "lifeExpectancy": 81,
+      "medianIncome": 70370,
+      "medianHouseholdIncome": 78000,
+      "walkabilityScore": 68,
+      "bikeScore": 59,
+      "transitScore": 57,
+      "shoolRating": 7,
+      "notes": "Entertainment capital of the world.",
+      "createdAt": "2024-03-01T08:00:00.000Z",
+      "updatedAt": "2025-05-01T14:00:00.000Z"
+    },
+    {
+      "id": 102,
+      "name": "San Francisco",
+      "stateId": 1,
+      "population": 870000,
+      "salesTaxRate": 0.08625,
+      "subreddit": "r/sanfrancisco",
+      "naturalDisasters": "Earthquakes, Fog",
+      "violentCrimeRate": 6.9,
+      "propertyCrimeRate": 45.0,
+      "lifeExpectancy": 83,
+      "medianIncome": 120000,
+      "medianHouseholdIncome": 135000,
+      "walkabilityScore": 88,
+      "bikeScore": 78,
+      "transitScore": 80,
+      "shoolRating": 8,
+      "notes": "Tech hub with iconic landmarks.",
+      "createdAt": "2024-03-05T09:00:00.000Z",
+      "updatedAt": "2025-04-20T16:00:00.000Z"
+    },
+    {
+      "id": 201,
+      "name": "New York City",
+      "stateId": 2,
+      "population": 8400000,
+      "salesTaxRate": 0.08875,
+      "subreddit": "r/nyc",
+      "naturalDisasters": "Hurricanes, Blizzards",
+      "violentCrimeRate": 5.8,
+      "propertyCrimeRate": 20.5,
+      "lifeExpectancy": 82,
+      "medianIncome": 75000,
+      "medianHouseholdIncome": 85000,
+      "walkabilityScore": 89,
+      "bikeScore": 70,
+      "transitScore": 85,
+      "shoolRating": 7,
+      "notes": "The city that never sleeps.",
+      "createdAt": "2024-04-10T10:00:00.000Z",
+      "updatedAt": "2025-04-25T11:00:00.000Z"
+    }
+  ],
+  "neighborhoods": [
+    {
+      "id": 10101,
+      "name": "Hollywood",
+      "cityId": 101,
+      "population": 150000,
+      "area": 17.5,
+      "description": "Famous for its film industry and Walk of Fame.",
+      "walkabilityScore": 75,
+      "bikeScore": 60,
+      "transitScore": 65,
+      "schoolRating": 6,
+      "notes": "Tourist hotspot.",
+      "createdAt": "2024-03-15T14:00:00.000Z",
+      "updatedAt": "2025-03-20T15:00:00.000Z"
+    },
+    {
+      "id": 10201,
+      "name": "Mission District",
+      "cityId": 102,
+      "population": 60000,
+      "area": 1.48,
+      "description": "Known for its vibrant murals, Latin culture, and trendy restaurants.",
+      "walkabilityScore": 97,
+      "bikeScore": 92,
+      "transitScore": 85,
+      "schoolRating": 7,
+      "notes": "Great food scene.",
+      "createdAt": "2024-03-18T16:00:00.000Z",
+      "updatedAt": "2025-03-22T17:00:00.000Z"
+    },
+    {
+      "id": 20101,
+      "name": "Greenwich Village",
+      "cityId": 201,
+      "population": 85000,
+      "area": 0.33,
+      "description": "Historic neighborhood known for its bohemian past and brownstones.",
+      "walkabilityScore": 98,
+      "bikeScore": 85,
+      "transitScore": 95,
+      "schoolRating": 8,
+      "notes": "Charming and lively.",
+      "createdAt": "2024-04-20T11:00:00.000Z",
+      "updatedAt": "2025-04-22T12:00:00.000Z"
+    }
+  ],
+  "monthlyWeather": [
+    {
+      "id": 1,
+      "cityId": 101,
+      "month": 7,
+      "avgHighTempF": 84.0,
+      "avgLowTempF": 66.0,
+      "avgTempF": 75.0,
+      "avgRainfallInch": 0.01,
+      "humiditiy": 0.65,
+      "createdAt": "2024-05-01T00:00:00.000Z",
+      "updatedAt": "2024-05-01T00:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "cityId": 101,
+      "month": 1,
+      "avgHighTempF": 68.0,
+      "avgLowTempF": 48.0,
+      "avgTempF": 58.0,
+      "avgRainfallInch": 3.1,
+      "humiditiy": 0.6,
+      "createdAt": "2024-05-01T00:00:00.000Z",
+      "updatedAt": "2024-05-01T00:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "cityId": 201,
+      "month": 7,
+      "avgHighTempF": 85.0,
+      "avgLowTempF": 69.0,
+      "avgTempF": 77.0,
+      "avgRainfallInch": 4.6,
+      "humiditiy": 0.7,
+      "createdAt": "2024-05-01T00:00:00.000Z",
+      "updatedAt": "2024-05-01T00:00:00.000Z"
+    },
+    {
+      "id": 4,
+      "cityId": 201,
+      "month": 1,
+      "avgHighTempF": 39.0,
+      "avgLowTempF": 26.0,
+      "avgTempF": 32.5,
+      "avgRainfallInch": 3.6,
+      "humiditiy": 0.62,
+      "createdAt": "2024-05-01T00:00:00.000Z",
+      "updatedAt": "2024-05-01T00:00:00.000Z"
+    }
+  ],
+  "places": [
+    {
+      "id": 1001,
+      "cityId": 101,
+      "name": "Griffith Observatory",
+      "type": "MUSEUM",
+      "neighborhoodId": 10101,
+      "address": "2800 E Observatory Rd, Los Angeles, CA 90027",
+      "website": "http://griffithobservatory.org/",
+      "description": "Iconic observatory with views of the Hollywood Sign and LA.",
+      "createdAt": "2024-03-20T10:00:00.000Z",
+      "updatedAt": "2025-04-15T11:00:00.000Z"
+    },
+    {
+      "id": 1002,
+      "cityId": 101,
+      "name": "Angel City Brewery",
+      "type": "BREWERY",
+      "address": "216 S Alameda St, Los Angeles, CA 90012",
+      "website": "https://angelcitybrewery.com/",
+      "description": "Popular craft brewery in the Arts District.",
+      "createdAt": "2024-03-22T11:00:00.000Z",
+      "updatedAt": "2025-04-18T12:00:00.000Z"
+    },
+    {
+      "id": 1003,
+      "cityId": 102,
+      "name": "The Fillmore",
+      "type": "MUSIC_VENUE",
+      "neighborhoodId": null,
+      "address": "1805 Geary Blvd, San Francisco, CA 94115",
+      "website": "https://www.thefillmore.com/",
+      "description": "Legendary music venue.",
+      "createdAt": "2024-03-25T12:00:00.000Z",
+      "updatedAt": "2025-04-20T13:00:00.000Z"
+    },
+    {
+      "id": 2001,
+      "cityId": 201,
+      "name": "The Metropolitan Museum of Art",
+      "type": "MUSEUM",
+      "neighborhoodId": null,
+      "address": "1000 5th Ave, New York, NY 10028",
+      "website": "https://www.metmuseum.org/",
+      "description": "One of the world's largest and finest art museums.",
+      "createdAt": "2024-04-25T14:00:00.000Z",
+      "updatedAt": "2025-04-28T15:00:00.000Z"
+    },
+    {
+      "id": 2002,
+      "cityId": 201,
+      "name": "Joe's Pizza",
+      "type": "RESTAURANT",
+      "neighborhoodId": 20101,
+      "address": "7 Carmine St, New York, NY 10014",
+      "website": "https://www.joespizzanyc.com/",
+      "description": "Classic New York style pizza.",
+      "createdAt": "2024-04-26T15:00:00.000Z",
+      "updatedAt": "2025-04-29T16:00:00.000Z"
+    }
+  ],
+  "events": [
+    {
+      "id": 1,
+      "cityID": 101,
+      "placeId": 1002,
+      "name": "Brewery Tour & Tasting",
+      "date": "2025-07-15T14:00:00.000Z",
+      "startTime": "2025-07-15T14:00:00.000Z",
+      "endTime": "2025-07-15T16:00:00.000Z",
+      "details": "Guided tour of Angel City Brewery and tasting session.",
+      "website": "https://angelcitybrewery.com/tours",
+      "ticketUrl": null,
+      "createdAt": "2025-05-01T10:00:00.000Z",
+      "updatedAt": "2025-05-01T10:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "cityID": 102,
+      "placeId": 1003,
+      "name": "Indie Band Showcase",
+      "date": "2025-08-01T20:00:00.000Z",
+      "startTime": "2025-08-01T20:00:00.000Z",
+      "endTime": "2025-08-01T23:00:00.000Z",
+      "details": "Featuring up and coming local bands.",
+      "website": "https://www.thefillmore.com/events",
+      "ticketUrl": "https://www.ticketmaster.com/thefillmore",
+      "createdAt": "2025-05-02T11:00:00.000Z",
+      "updatedAt": "2025-05-02T11:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "cityID": 201,
+      "placeId": null,
+      "name": "NYC Marathon",
+      "date": "2025-11-02T08:00:00.000Z",
+      "startTime": "2025-11-02T08:00:00.000Z",
+      "endTime": "2025-11-02T17:00:00.000Z",
+      "details": "Annual marathon through the five boroughs of NYC.",
+      "website": "https://www.nyrr.org/tcsnycmarathon",
+      "ticketUrl": null,
+      "createdAt": "2025-05-03T12:00:00.000Z",
+      "updatedAt": "2025-05-03T12:00:00.000Z"
+    }
+  ],
+  "ageDemographics": [
+    {
+      "id": 1,
+      "cityId": 101,
+      "ageRange": "0-17",
+      "percent": 22.5,
+      "createdAt": "2024-05-01T00:00:00.000Z",
+      "updatedAt": "2024-05-01T00:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "cityId": 101,
+      "ageRange": "18-34",
+      "percent": 30.1,
+      "createdAt": "2024-05-01T00:00:00.000Z",
+      "updatedAt": "2024-05-01T00:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "cityId": 101,
+      "ageRange": "35-64",
+      "percent": 35.2,
+      "createdAt": "2024-05-01T00:00:00.000Z",
+      "updatedAt": "2024-05-01T00:00:00.000Z"
+    },
+    {
+      "id": 4,
+      "cityId": 101,
+      "ageRange": "65+",
+      "percent": 12.2,
+      "createdAt": "2024-05-01T00:00:00.000Z",
+      "updatedAt": "2024-05-01T00:00:00.000Z"
+    },
+    {
+      "id": 5,
+      "cityId": 201,
+      "ageRange": "0-17",
+      "percent": 21.0,
+      "createdAt": "2024-05-01T00:00:00.000Z",
+      "updatedAt": "2024-05-01T00:00:00.000Z"
+    },
+    {
+      "id": 6,
+      "cityId": 201,
+      "ageRange": "18-34",
+      "percent": 28.5,
+      "createdAt": "2024-05-01T00:00:00.000Z",
+      "updatedAt": "2024-05-01T00:00:00.000Z"
+    }
+  ],
+  "ethnicDemographics": [
+    {
+      "id": 1,
+      "cityId": 101,
+      "group": "Hispanic or Latino",
+      "percent": 48.5,
+      "createdAt": "2024-05-01T00:00:00.000Z",
+      "updatedAt": "2024-05-01T00:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "cityId": 101,
+      "group": "White",
+      "percent": 28.7,
+      "createdAt": "2024-05-01T00:00:00.000Z",
+      "updatedAt": "2024-05-01T00:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "cityId": 101,
+      "group": "Asian",
+      "percent": 11.8,
+      "createdAt": "2024-05-01T00:00:00.000Z",
+      "updatedAt": "2024-05-01T00:00:00.000Z"
+    },
+    {
+      "id": 4,
+      "cityId": 101,
+      "group": "Black or African American",
+      "percent": 8.9,
+      "createdAt": "2024-05-01T00:00:00.000Z",
+      "updatedAt": "2024-05-01T00:00:00.000Z"
+    },
+    {
+      "id": 5,
+      "cityId": 201,
+      "group": "White",
+      "percent": 42.7,
+      "createdAt": "2024-05-01T00:00:00.000Z",
+      "updatedAt": "2024-05-01T00:00:00.000Z"
+    },
+    {
+      "id": 6,
+      "cityId": 201,
+      "group": "Hispanic or Latino",
+      "percent": 29.1,
+      "createdAt": "2024-05-01T00:00:00.000Z",
+      "updatedAt": "2024-05-01T00:00:00.000Z"
+    }
+  ],
+  "airports": [
+    {
+      "id": 1,
+      "cityId": 101,
+      "name": "Los Angeles International Airport",
+      "code": "LAX",
+      "isInternational": true,
+      "travelTimeMinutes": 45,
+      "distanceMiles": 18.0,
+      "transitOptions": "FlyAway Bus, Metro Rail, Ride Shares",
+      "website": "https://www.flylax.com/",
+      "description": "Major international gateway to Southern California.",
+      "createdAt": "2024-05-01T00:00:00.000Z",
+      "updatedAt": "2024-05-01T00:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "cityId": 102,
+      "name": "San Francisco International Airport",
+      "code": "SFO",
+      "isInternational": true,
+      "travelTimeMinutes": 30,
+      "distanceMiles": 13.0,
+      "transitOptions": "BART, SamTrans Bus, Ride Shares",
+      "website": "https://www.flysfo.com/",
+      "description": "Main airport serving the San Francisco Bay Area.",
+      "createdAt": "2024-05-01T00:00:00.000Z",
+      "updatedAt": "2024-05-01T00:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "cityId": 201,
+      "name": "John F. Kennedy International Airport",
+      "code": "JFK",
+      "isInternational": true,
+      "travelTimeMinutes": 60,
+      "distanceMiles": 15.0,
+      "transitOptions": "AirTrain, Subway, LIRR, NYC Airporter",
+      "website": "https://www.jfkairport.com/",
+      "description": "Primary international airport serving New York City.",
+      "createdAt": "2024-05-01T00:00:00.000Z",
+      "updatedAt": "2024-05-01T00:00:00.000Z"
+    }
+  ],
+  "resources": [
+    {
+      "id": 1,
+      "title": "Walk Score",
+      "description": "Provides walkability, bikeability, and transit scores for addresses and neighborhoods.",
+      "url": "https://www.walkscore.com/",
+      "category": "Livability",
+      "createdAt": "2024-05-01T00:00:00.000Z",
+      "updatedAt": "2024-05-01T00:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "title": "Numbeo",
+      "description": "Crowd-sourced global database of quality of life data: cost of living, housing indicators, health care, traffic, crime and pollution.",
+      "url": "https://www.numbeo.com/",
+      "category": "Cost of Living",
+      "createdAt": "2024-05-01T00:00:00.000Z",
+      "updatedAt": "2024-05-01T00:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "title": "GreatSchools",
+      "description": "Provides school ratings and reviews.",
+      "url": "https://www.greatschools.org/",
+      "category": "Education",
+      "createdAt": "2024-05-01T00:00:00.000Z",
+      "updatedAt": "2024-05-01T00:00:00.000Z"
+    }
+  ],
+  "allergenLevels": [
+    {
+      "id": 1,
+      "cityId": 101,
+      "month": 3,
+      "pollen": 7,
+      "dust": 4,
+      "mold": 3,
+      "ragweed": 2,
+      "grass": 6,
+      "trees": 7
+    },
+    {
+      "id": 2,
+      "cityId": 101,
+      "month": 9,
+      "pollen": 5,
+      "dust": 5,
+      "mold": 4,
+      "ragweed": 6,
+      "grass": 4,
+      "trees": 3
+    },
+    {
+      "id": 3,
+      "cityId": 201,
+      "month": 5,
+      "pollen": 8,
+      "dust": 3,
+      "mold": 5,
+      "ragweed": 1,
+      "grass": 7,
+      "trees": 8
+    },
+    {
+      "id": 4,
+      "cityId": 201,
+      "month": 8,
+      "pollen": 6,
+      "dust": 4,
+      "mold": 6,
+      "ragweed": 7,
+      "grass": 5,
+      "trees": 4
+    }
+  ]
+}
