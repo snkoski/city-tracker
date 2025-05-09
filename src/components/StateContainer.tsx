@@ -5,7 +5,7 @@ type StateContainerProps = {
 };
 
 const StateContainer = ({ children }: StateContainerProps) => {
-  return <div className="w-full h-full">{children}</div>;
+  return <div className="h-full border-s-black border-2 rounded-md p-4 w-fit">{children}</div>;
 };
 
 export default StateContainer;

@@ -1,8 +1,8 @@
 type CityDetailsProps = {
   name: string;
   state: string;
-  population: number;
-  taxRate: number;
+  population: number | null;
+  taxRate: number | null;
 };
 
 export const CityDetails = ({ name, state, population, taxRate }: CityDetailsProps) => {
@@ -11,8 +11,8 @@ export const CityDetails = ({ name, state, population, taxRate }: CityDetailsPro
       <p>
         {name}, {state}
       </p>
-      <p>Population: {population}</p>
-      <p>Tax Rate: {taxRate}</p>
+      <p>Population: {population ?? 'N/A'}</p>
+      <p>Tax Rate: {taxRate ?? 'N/A'}</p>
     </div>
   );
 };

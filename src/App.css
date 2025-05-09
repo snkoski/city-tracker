@@ -28,10 +28,10 @@ body {
   transition: background-color 0.3s, color 0.3s;
 }
 
-/* button {
+button {
   background-color: var(--primary-btn-color);
   color: var(--primary-btn-text);
-} */
+}
 
 input {
   background-color: var(--bg-color);
