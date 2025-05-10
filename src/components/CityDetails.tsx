@@ -4,11 +4,11 @@ type CityDetailsProps = {
   city: City;
 };
 
-export const CityDetails = ({ city }: CityDetailsProps) => {
+export const CityDetails = ({ city: { name, id } }: CityDetailsProps) => {
   return (
     <div>
-      <p>{city.name}</p>
-      <p>{city.id} for some reason</p>
+      <p>{name}</p>
+      <p>{id} for some reason</p>
     </div>
   );
 };
