@@ -8,12 +8,13 @@ import { CitySummary } from './components/CitySummary';
 import { Footer } from './components/Footer';
 import { Header } from './components/Header';
 import { CityDetails } from './components/CityDetails';
-import { City, State } from '@prisma/client';
+import { City, Resource, State } from '@prisma/client';
+import { Resources } from './components/Resources';
 
 function App() {
-  const [currentView, setCurrentView] = useState<'stateList' | 'citiesList' | 'cityDetails'>(
-    'stateList'
-  );
+  const [currentView, setCurrentView] = useState<
+    'stateList' | 'citiesList' | 'cityDetails' | 'resources'
+  >('stateList');
 
   const [states, setStates] = useState<State[]>([]);
   const [selectedState, setSelectedState] = useState<State | null>(null);
@@ -21,11 +22,17 @@ function App() {
   const [cities, setCities] = useState<City[]>([]);
   const [selectedCity, setSelectedCity] = useState<City | null>(null);
 
-  const [loading, setLoading] = useState(true);
+  const [resources, setResources] = useState<Resource[]>([]);
+
+  const [loadingStates, setLoadingStates] = useState(true);
+  const [loadingCities, setLoadingCities] = useState(false);
+  const [loadingCity, setLoadingCity] = useState(false);
+  const [loadingResources, setLoadingResources] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchStates = async () => {
+      setLoadingStates(true);
       try {
         // Fetch data from the json-server endpoint for states
         const response = await fetch('http://localhost:3000/states');
@@ -44,17 +51,41 @@ function App() {
         }
         console.error('Failed to fetch States:', e);
       } finally {
-        setLoading(false);
+        setLoadingStates(false);
       }
     };
 
     fetchStates();
   }, []);
 
+  useEffect(() => {
+    const fetchResources = async () => {
+      setLoadingResources(true);
+      try {
+        const response = await fetch('http://localhost:3000/resources');
+        if (!response.ok) {
+          throw new Error(`In fetchResources - HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setResources(data);
+      } catch (e) {
+        if (e instanceof Error) {
+          setError(e.message);
+        } else {
+          setError('In fetchResources - An unknown error occured');
+        }
+        console.error(`Failed to fetch Resources: ${e}`);
+      } finally {
+        setLoadingResources(false);
+      }
+    };
+    fetchResources();
+  }, []);
+
   const handleSelectState = async (state: State) => {
     setSelectedState(state);
     setCurrentView('citiesList');
-    setLoading(true);
+    setLoadingCities(true);
     setError(null);
     setCities([]);
     try {
@@ -72,14 +103,14 @@ function App() {
       }
       console.error('Failed to fetch Cities:', e);
     } finally {
-      setLoading(false);
+      setLoadingCities(false);
     }
   };
 
   const handleSelectCity = async (city: City) => {
     setSelectedCity(city);
     setCurrentView('cityDetails');
-    setLoading(true);
+    setLoadingCity(true);
     setError(null);
     try {
       const response = await fetch(
@@ -98,8 +129,12 @@ function App() {
       }
       console.error(`Failed to fetch CityDetails: ${e}`);
     } finally {
-      setLoading(false);
+      setLoadingCity(false);
     }
+  };
+
+  const handleShowResources = () => {
+    setCurrentView('resources');
   };
 
   const handleBackToStates = () => {
@@ -114,6 +149,9 @@ function App() {
   const renderContent = () => {
     switch (currentView) {
       case 'stateList':
+        if (loadingStates) {
+          return <p>Loading states...</p>;
+        }
         return (
           <main className="flex flex-row gap-2">
             {states.length > 0 ? (
@@ -130,6 +168,7 @@ function App() {
         );
 
       case 'citiesList':
+        if (loadingCities) return <p>Loading cities...</p>;
         return (
           <div>
             <div className="flex flex-row gap-2">
@@ -150,6 +189,7 @@ function App() {
         );
 
       case 'cityDetails':
+        if (loadingCity) return <p>Loading city...</p>;
         return (
           <div>
             {selectedCity && <CityDetails city={selectedCity} />}
@@ -162,18 +202,14 @@ function App() {
           </div>
         );
 
+      case 'resources':
+        if (loadingResources) return <p>Loading Resources...</p>;
+        return <Resources resources={resources} />;
+
       default:
         return <div>something has gone wrong</div>;
     }
   };
-
-  if (loading) {
-    return (
-      <div className="container">
-        <p>Loading states...</p>
-      </div>
-    );
-  }
 
   if (error) {
     return (
@@ -185,7 +221,11 @@ function App() {
 
   return (
     <div className="flex flex-col min-h-screen min-w-screen items-center">
-      <Header />
+      <Header
+        onShowResources={handleShowResources}
+        onShowStates={handleBackToStates}
+        showResources={currentView === 'resources'}
+      />
       {renderContent()}
       <Footer />
     </div>

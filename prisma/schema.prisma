@@ -195,7 +195,7 @@ model Resource {
   id          Int      @id @default(autoincrement())
   title       String // Display name, like "Walk Score"
   description String? // Optional, e.g. "Provides walkability scores by city"
-  url         String? // Actual link
+  url         String // Actual link
   category    String? // Optional, e.g. "Demographics", "Real Estate", etc.
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
