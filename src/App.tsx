@@ -3,7 +3,6 @@ import StateContainer from './components/StateContainer';
 import { StateDetails } from './components/StateDetails';
 
 import './App.css';
-// import { CityContainer } from './components/CityContainer';
 import { CitySummary } from './components/CitySummary';
 import { Footer } from './components/Footer';
 import { Header } from './components/Header';
@@ -11,7 +10,7 @@ import { CityDetails } from './components/CityDetails';
 import { City, Resource, State } from '@prisma/client';
 import { Resources } from './components/Resources';
 
-function App() {
+export const App = () => {
   const [currentView, setCurrentView] = useState<
     'stateList' | 'citiesList' | 'cityDetails' | 'resources'
   >('stateList');
@@ -230,50 +229,4 @@ function App() {
       <Footer />
     </div>
   );
-
-  // <div className="App">
-  //   <header className="App-header">
-  //     <h1>City Tracker, i guess</h1>
-  //   </header>
-  //   {selectedStateId ? (
-  //     <div>
-  //       <div className="flex flex-row gap-2">
-  //         {cities.map(({ name, population, salesTaxRate }) => (
-  //           <StateContainer>
-  //             <CityDetails
-  //               name={name}
-  //               population={population}
-  //               taxRate={salesTaxRate}
-  //               state={states.find((state) => state.id === selectedStateId)?.name ?? 'N/A'}
-  //             />
-  //           </StateContainer>
-  //         ))}
-  //       </div>
-  //       <button type="button" onClick={() => setSelectedStateId(null)}>
-  //         Back to states
-  //       </button>
-  //     </div>
-  //   ) : (
-  // <main className="flex flex-row gap-2">
-  //   {states.length > 0 ? (
-  //     states.map((state) => (
-  //       <StateContainer key={state.id}>
-  //         <StateDetails
-  //           id={state.id}
-  //           name={state.name}
-  //           population={state.population}
-  //           incomeTaxRate={state.incomeTaxRate}
-  //           setSelectedStateId={setSelectedStateId}
-  //         />
-  //       </StateContainer>
-  //     ))
-  //   ) : (
-  //     // Display a message if no states are found or the array is empty
-  //     <p>No states found. Ensure your mock server is running and has data.</p>
-  //   )}
-  // </main>
-  //   )}
-  // </div>
-}
-
-export default App;
+};
