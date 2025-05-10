@@ -219,3 +219,10 @@ model AllergenLevel {
   @@unique([cityId, month])
   @@map("alergen_levels")
 }
+
+// model DailySunriseSunset {
+//   id                Int @id @default(autoincrement())
+//   cityId            Int
+//   month             Int // 1 = January, 12 = December
+//   sunriseFirstLight
+// }

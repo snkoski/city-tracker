@@ -1,24 +1,17 @@
+import { State } from '@prisma/client';
+
 type StateDetailsProps = {
-  id: number;
-  incomeTaxRate: number;
-  name: string;
-  population: number;
-  setSelectedStateId: React.Dispatch<React.SetStateAction<number | null>>;
+  state: State;
+  onSelectState: React.Dispatch<React.SetStateAction<number | null>>;
 };
 
-export const StateDetails = ({
-  id,
-  name,
-  population,
-  incomeTaxRate,
-  setSelectedStateId
-}: StateDetailsProps) => {
+export const StateDetails = ({ state, onSelectState }: StateDetailsProps) => {
   return (
     <div className="flex flex-col">
-      <p>{name}</p>
-      <p>Population: {population}</p>
-      <p>Income Tax Rate: {incomeTaxRate}</p>
-      <button type="button" onClick={() => setSelectedStateId(id)}>
+      <p>{state.name}</p>
+      <p>Population: {state.population}</p>
+      <p>Income Tax Rate: {state.incomeTaxRate?.toString()}</p>
+      <button type="button" onClick={() => onSelectState(state.id)}>
         Go to cities
       </button>
     </div>

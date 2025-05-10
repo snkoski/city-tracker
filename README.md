@@ -1,3 +1,10 @@
+# JSON-Server
+
+## Start the JSON-Server
+```bash
+pnpm exec json-server --watch db.json
+```
+
 # Prisma Commands Reference Guide
 
 ## Schema Update Workflow (Safe for Existing Data)

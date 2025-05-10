@@ -32,7 +32,7 @@ button {
   background-color: var(--primary-btn-color);
   color: var(--primary-btn-text);
 }
-
+/*
 input {
   background-color: var(--bg-color);
   color: var(--text-color);
@@ -51,7 +51,7 @@ input {
   background-color: var(--bg-color, white);
   padding: 1rem;
   border-bottom: 1px solid #ccc;
-  z-index: 2; /* keeping it low per your preference */
+  z-index: 2; 
 }
 
 .new-city-form {
@@ -97,10 +97,10 @@ input {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2; /* keeping it small like you prefer */
+  z-index: 2; 
   transition: background-color 0.2s ease;
 }
 
 .slideout-btn:hover {
   background-color: coral;
-}
+} */
