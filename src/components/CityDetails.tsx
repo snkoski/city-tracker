@@ -1,13 +1,14 @@
+import { City } from '@prisma/client';
+
 type CityDetailsProps = {
-  name: string;
-  id: number;
+  city: City;
 };
 
-export const CityDetails = ({ name, id }: CityDetailsProps) => {
+export const CityDetails = ({ city }: CityDetailsProps) => {
   return (
     <div>
-      <p>{name}</p>
-      <p>{id} for some reason</p>
+      <p>{city.name}</p>
+      <p>{city.id} for some reason</p>
     </div>
   );
 };

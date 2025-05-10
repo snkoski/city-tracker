@@ -11,15 +11,16 @@ import { CityDetails } from './components/CityDetails';
 import { City, State } from '@prisma/client';
 
 function App() {
-  const [currentView, setCurrentView] = useState<'stateList' | 'cityList' | 'cityDetails'>(
+  const [currentView, setCurrentView] = useState<'stateList' | 'citiesList' | 'cityDetails'>(
     'stateList'
   );
 
   const [states, setStates] = useState<State[]>([]);
-  const [selectedStateId, setSelectedStateId] = useState<number | null>(null);
+  const [selectedState, setSelectedState] = useState<State | null>(null);
+
   const [cities, setCities] = useState<City[]>([]);
-  const [selectedCityId, setSelectedCityId] = useState<number>(101);
-  const [cityDetails, setCityDetails] = useState<City | null>(null);
+  const [selectedCity, setSelectedCity] = useState<City | null>(null);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -30,7 +31,7 @@ function App() {
         const response = await fetch('http://localhost:3000/states');
 
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          throw new Error(`In fetchStates - HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
         setStates(data);
@@ -39,9 +40,9 @@ function App() {
           setError(e.message);
         } else {
           // Handle cases where 'e' might not be an Error object
-          setError('An unknown error occurred');
+          setError('In fetchStates - An unknown error occurred');
         }
-        console.error('Failed to fetch states:', e);
+        console.error('Failed to fetch States:', e);
       } finally {
         setLoading(false);
       }
@@ -50,80 +51,64 @@ function App() {
     fetchStates();
   }, []);
 
-  useEffect(() => {
-    const fetchCities = async () => {
-      try {
-        // Fetch data from the json-server endpoint for cities of a specific state
-        const response = await fetch(`http://localhost:3000/cities?stateId=${selectedStateId}`);
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        setCities(data);
-      } catch (e) {
-        if (e instanceof Error) {
-          setError(e.message);
-        } else {
-          // Handle cases where 'e' might not be an Error object
-          setError('An unknown error occurred');
-        }
-        console.error('Failed to fetch states:', e);
-      } finally {
-        setLoading(false);
+  const handleSelectState = async (state: State) => {
+    setSelectedState(state);
+    setCurrentView('citiesList');
+    setLoading(true);
+    setError(null);
+    setCities([]);
+    try {
+      const response = await fetch(`http://localhost:3000/cities?stateId=${state?.id}`);
+      if (!response.ok) {
+        throw new Error(`In fetchCities - HTTP error! status: ${response.status}`);
       }
-    };
-
-    fetchCities();
-  }, [selectedStateId]);
-
-  useEffect(() => {
-    const fetchCityDetails = async () => {
-      try {
-        // Fetch data from the json-server endpoint for cities of a specific state
-        const response = await fetch(
-          `http://localhost:3000/cities/${selectedCityId}?_embed=places&_embed=events&_embed=neighborhoods&_embed=monthlyWeather&_embed=ageDemographics&_embed=ethnicDemographics&_embed=airports&_embed=allergenLevels`
-        );
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        setCityDetails(data);
-        console.log('CITY Details DATA', data);
-      } catch (e) {
-        if (e instanceof Error) {
-          setError(e.message);
-        } else {
-          // Handle cases where 'e' might not be an Error object
-          setError('An unknown error occurred');
-        }
-        console.error('Failed to fetch city inpfo:', e);
-      } finally {
-        setLoading(false);
+      const data = await response.json();
+      setCities(data);
+    } catch (e) {
+      if (e instanceof Error) {
+        setError(e.message);
+      } else {
+        setError('In fetchCities - An unknown error occurred');
       }
-    };
+      console.error('Failed to fetch Cities:', e);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchCityDetails();
-  }, [selectedCityId]);
-
-  const handleSelectState = (stateId: number) => {
-    setSelectedStateId(stateId);
-    setCurrentView('cityList');
+  const handleSelectCity = async (city: City) => {
+    setSelectedCity(city);
+    setCurrentView('cityDetails');
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch(
+        `http://localhost:3000/cities/${city.id}?_embed=places&_embed=events&_embed=neighborhoods&_embed=monthlyWeather&_embed=ageDemographics&_embed=ethnicDemographics&_embed=airports&_embed=allergenLevels`
+      );
+      if (!response.ok) {
+        throw new Error(`in fetchCityDetails - HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setSelectedCity(data);
+    } catch (e) {
+      if (e instanceof Error) {
+        setError(e.message);
+      } else {
+        setError('In fetchCityDetails - An unknown error occurred');
+      }
+      console.error(`Failed to fetch CityDetails: ${e}`);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleBackToStates = () => {
-    setSelectedStateId(null);
+    setSelectedState(null);
     setCurrentView('stateList');
   };
 
   const handleBackToCities = () => {
-    setCurrentView('cityList');
-  };
-
-  const handleSelectCity = (cityId: number) => {
-    setSelectedCityId(cityId);
-    setCurrentView('cityDetails');
+    setCurrentView('citiesList');
   };
 
   const renderContent = () => {
@@ -134,7 +119,7 @@ function App() {
             {states.length > 0 ? (
               states.map((state) => (
                 <StateContainer key={state.id}>
-                  <StateDetails state={state} onSelectState={() => handleSelectState(state.id)} />
+                  <StateDetails state={state} onSelectState={() => handleSelectState(state)} />
                 </StateContainer>
               ))
             ) : (
@@ -144,7 +129,7 @@ function App() {
           </main>
         );
 
-      case 'cityList':
+      case 'citiesList':
         return (
           <div>
             <div className="flex flex-row gap-2">
@@ -152,8 +137,8 @@ function App() {
                 <StateContainer>
                   <CitySummary
                     city={city}
-                    state={states.find((state) => state.id === selectedStateId)?.name ?? 'N/A'}
-                    onSelectCity={() => handleSelectCity(city.id)}
+                    state={states.find((state) => state.id === selectedState?.id)?.name ?? 'N/A'}
+                    onSelectCity={() => handleSelectCity(city)}
                   />
                 </StateContainer>
               ))}
@@ -167,7 +152,7 @@ function App() {
       case 'cityDetails':
         return (
           <div>
-            <CityDetails name={cityDetails?.name ?? 'N/A'} id={selectedCityId} />
+            {selectedCity && <CityDetails city={selectedCity} />}
             <button type="button" onClick={handleBackToCities}>
               Back to Cities
             </button>
