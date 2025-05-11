@@ -1,9 +1,8 @@
 import { ReactNode } from 'react';
-import { CityFullDetails } from '../types';
+import { CityFullDetails, EventWithPlaceDetails } from '../types';
 import {
   Airport,
   Place,
-  Event,
   MonthlyWeather,
   Neighborhood,
   AgeDemographic,
@@ -108,8 +107,35 @@ export const CityDetails = ({ city }: CityDetailsProps) => {
         },
         'row'
       )}
-      {sectionContainer<Event>('Events', city?.events, (event) => {
-        return <li key={event.id}>{event.name}</li>;
+      {sectionContainer<EventWithPlaceDetails>('Events', city?.events, (event) => {
+        return (
+          <li key={event.id}>
+            <div>
+              <p>
+                <strong>{event.name}</strong>
+                {event.place?.name && ` @ ${event.place.name}`}
+              </p>
+              {event.date && <p>{event.date.toString()}</p>}
+              {(event.startTime || event.endTime) && (
+                <p>
+                  {event.startTime && `From: ${event.startTime} `}
+                  {event.endTime && `Until: ${event.endTime}`}
+                </p>
+              )}
+              {event.website && (
+                <a href={`${event.website}`} target="_blank" rel="noopener noreferrer">
+                  <p>Website</p>
+                </a>
+              )}
+              {event.ticketUrl && (
+                <a href={`${event.ticketUrl}`} target="_blank" rel="noopener noreferrer">
+                  <p>Tickets</p>
+                </a>
+              )}
+              {event.details && <p>{event.details}</p>}
+            </div>
+          </li>
+        );
       })}
       {sectionContainer<AgeDemographic>(
         'Age Demographics',

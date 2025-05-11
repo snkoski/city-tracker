@@ -17,3 +17,9 @@ export type CityFullDetails = Prisma.CityGetPayload<{
     state: true;
   };
 }>;
+
+export type EventWithPlaceDetails = Prisma.EventGetPayload<{
+  include: {
+    place: true;
+  };
+}>;
