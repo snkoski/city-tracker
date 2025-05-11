@@ -243,7 +243,7 @@
   "events": [
     {
       "id": 1,
-      "cityID": 101,
+      "cityId": 101,
       "placeId": 1002,
       "name": "Brewery Tour & Tasting",
       "date": "2025-07-15T14:00:00.000Z",
@@ -257,7 +257,7 @@
     },
     {
       "id": 2,
-      "cityID": 102,
+      "cityId": 102,
       "placeId": 1003,
       "name": "Indie Band Showcase",
       "date": "2025-08-01T20:00:00.000Z",
@@ -271,7 +271,7 @@
     },
     {
       "id": 3,
-      "cityID": 201,
+      "cityId": 201,
       "placeId": null,
       "name": "NYC Marathon",
       "date": "2025-11-02T08:00:00.000Z",
