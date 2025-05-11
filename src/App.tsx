@@ -7,9 +7,15 @@ import { CitySummary } from './components/CitySummary';
 import { Footer } from './components/Footer';
 import { Header } from './components/Header';
 import { CityDetails } from './components/CityDetails';
-import { Resource, State } from '@prisma/client';
+import { City, Resource, State } from '@prisma/client';
 import { Resources } from './components/Resources';
 import { CityFullDetails } from './types';
+import {
+  fetchCities,
+  fetchFullCityDetails,
+  fetchResources,
+  fetchStates
+} from './services/apiService';
 
 export const App = () => {
   const [currentView, setCurrentView] = useState<
@@ -19,7 +25,7 @@ export const App = () => {
   const [states, setStates] = useState<State[]>([]);
   const [selectedState, setSelectedState] = useState<State | null>(null);
 
-  const [cities, setCities] = useState<CityFullDetails[]>([]);
+  const [cities, setCities] = useState<City[]>([]);
   const [selectedCity, setSelectedCity] = useState<CityFullDetails | null>(null);
 
   const [resources, setResources] = useState<Resource[]>([]);
@@ -31,16 +37,10 @@ export const App = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchStates = async () => {
+    const loadStates = async () => {
       setLoadingStates(true);
       try {
-        // Fetch data from the json-server endpoint for states
-        const response = await fetch('http://localhost:3000/states');
-
-        if (!response.ok) {
-          throw new Error(`In fetchStates - HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
+        const data = await fetchStates();
         setStates(data);
       } catch (e) {
         if (e instanceof Error) {
@@ -55,18 +55,14 @@ export const App = () => {
       }
     };
 
-    fetchStates();
+    loadStates();
   }, []);
 
   useEffect(() => {
-    const fetchResources = async () => {
+    const loadResources = async () => {
       setLoadingResources(true);
       try {
-        const response = await fetch('http://localhost:3000/resources');
-        if (!response.ok) {
-          throw new Error(`In fetchResources - HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
+        const data = await fetchResources();
         setResources(data);
       } catch (e) {
         if (e instanceof Error) {
@@ -79,7 +75,7 @@ export const App = () => {
         setLoadingResources(false);
       }
     };
-    fetchResources();
+    loadResources();
   }, []);
 
   const handleSelectState = async (state: State) => {
@@ -89,11 +85,7 @@ export const App = () => {
     setError(null);
     setCities([]);
     try {
-      const response = await fetch(`http://localhost:3000/cities?stateId=${state?.id}`);
-      if (!response.ok) {
-        throw new Error(`In fetchCities - HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
+      const data = await fetchCities(state.id);
       setCities(data);
     } catch (e) {
       if (e instanceof Error) {
@@ -107,19 +99,14 @@ export const App = () => {
     }
   };
 
-  const handleSelectCity = async (city: CityFullDetails) => {
-    setSelectedCity(city);
+  const handleSelectCity = async (city: City) => {
     setCurrentView('cityDetails');
     setLoadingCity(true);
     setError(null);
     try {
-      const response = await fetch(
-        `http://localhost:3000/cities/${city.id}?_embed=places&_embed=events&_embed=neighborhoods&_embed=monthlyWeather&_embed=ageDemographics&_embed=ethnicDemographics&_embed=airports&_embed=allergenLevels&_expand=state`
-      );
-      if (!response.ok) {
-        throw new Error(`in fetchCityDetails - HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
+      const data = await fetchFullCityDetails(city.id);
+      console.log('ANY EVENTS', data);
+
       setSelectedCity(data);
     } catch (e) {
       if (e instanceof Error) {
