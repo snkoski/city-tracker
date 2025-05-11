@@ -4,7 +4,11 @@ export type CityFullDetails = Prisma.CityGetPayload<{
   include: {
     places: true;
     airports: true;
-    events: true;
+    events: {
+      include: {
+        place: true;
+      };
+    };
     monthlyWeather: true;
     neighborhoods: true;
     ageDemographics: true;
