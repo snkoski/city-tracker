@@ -7,8 +7,9 @@ import { CitySummary } from './components/CitySummary';
 import { Footer } from './components/Footer';
 import { Header } from './components/Header';
 import { CityDetails } from './components/CityDetails';
-import { City, Resource, State } from '@prisma/client';
+import { Resource, State } from '@prisma/client';
 import { Resources } from './components/Resources';
+import { CityFullDetails } from './types';
 
 export const App = () => {
   const [currentView, setCurrentView] = useState<
@@ -18,8 +19,8 @@ export const App = () => {
   const [states, setStates] = useState<State[]>([]);
   const [selectedState, setSelectedState] = useState<State | null>(null);
 
-  const [cities, setCities] = useState<City[]>([]);
-  const [selectedCity, setSelectedCity] = useState<City | null>(null);
+  const [cities, setCities] = useState<CityFullDetails[]>([]);
+  const [selectedCity, setSelectedCity] = useState<CityFullDetails | null>(null);
 
   const [resources, setResources] = useState<Resource[]>([]);
 
@@ -106,14 +107,14 @@ export const App = () => {
     }
   };
 
-  const handleSelectCity = async (city: City) => {
+  const handleSelectCity = async (city: CityFullDetails) => {
     setSelectedCity(city);
     setCurrentView('cityDetails');
     setLoadingCity(true);
     setError(null);
     try {
       const response = await fetch(
-        `http://localhost:3000/cities/${city.id}?_embed=places&_embed=events&_embed=neighborhoods&_embed=monthlyWeather&_embed=ageDemographics&_embed=ethnicDemographics&_embed=airports&_embed=allergenLevels`
+        `http://localhost:3000/cities/${city.id}?_embed=places&_embed=events&_embed=neighborhoods&_embed=monthlyWeather&_embed=ageDemographics&_embed=ethnicDemographics&_embed=airports&_embed=allergenLevels&_expand=state`
       );
       if (!response.ok) {
         throw new Error(`in fetchCityDetails - HTTP error! status: ${response.status}`);
@@ -172,7 +173,7 @@ export const App = () => {
           <div>
             <div className="flex flex-row gap-2">
               {cities.map((city) => (
-                <StateContainer>
+                <StateContainer key={city.id}>
                   <CitySummary
                     city={city}
                     state={states.find((state) => state.id === selectedState?.id)?.name ?? 'N/A'}

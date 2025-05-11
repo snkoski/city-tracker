@@ -34,7 +34,7 @@
       "walkabilityScore": 68,
       "bikeScore": 59,
       "transitScore": 57,
-      "shoolRating": 7,
+      "schoolRating": 7,
       "notes": "Entertainment capital of the world.",
       "createdAt": "2024-03-01T08:00:00.000Z",
       "updatedAt": "2025-05-01T14:00:00.000Z"
@@ -55,7 +55,7 @@
       "walkabilityScore": 88,
       "bikeScore": 78,
       "transitScore": 80,
-      "shoolRating": 8,
+      "schoolRating": 8,
       "notes": "Tech hub with iconic landmarks.",
       "createdAt": "2024-03-05T09:00:00.000Z",
       "updatedAt": "2025-04-20T16:00:00.000Z"
@@ -76,7 +76,7 @@
       "walkabilityScore": 89,
       "bikeScore": 70,
       "transitScore": 85,
-      "shoolRating": 7,
+      "schoolRating": 7,
       "notes": "The city that never sleeps.",
       "createdAt": "2024-04-10T10:00:00.000Z",
       "updatedAt": "2025-04-25T11:00:00.000Z"
