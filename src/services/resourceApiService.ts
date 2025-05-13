@@ -9,7 +9,7 @@ export const fetchResources = async (): Promise<Resource[]> => {
     throw new Error(`In fetchResources - HTTP error! status: ${response.status}`);
   }
   const data = await response.json();
-  return data as Promise<Resource[]>;
+  return data as Resource[];
 };
 
 export const createResource = async (resourceData: ResourceFormData): Promise<Resource> => {
@@ -34,7 +34,7 @@ export const createResource = async (resourceData: ResourceFormData): Promise<Re
   }
 
   const data = await response.json();
-  return data as Promise<Resource>;
+  return data as Resource;
 };
 
 export const updateResource = async (
@@ -62,7 +62,7 @@ export const updateResource = async (
   }
 
   const data = await response.json();
-  return data as Promise<Resource>;
+  return data as Resource;
 };
 
 export const deleteResource = async (id: number): Promise<void> => {
