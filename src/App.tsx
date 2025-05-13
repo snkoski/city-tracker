@@ -7,15 +7,10 @@ import { CitySummary } from './components/CitySummary';
 import { Footer } from './components/Footer';
 import { Header } from './components/Header';
 import { CityDetails } from './components/CityDetails';
-import { City, Resource, State } from '@prisma/client';
-import { Resources } from './components/Resources';
+import { City, State } from '@prisma/client';
 import { CityFullDetails } from './types';
-import {
-  fetchCities,
-  fetchFullCityDetails,
-  fetchResources,
-  fetchStates
-} from './services/apiService';
+import { fetchCities, fetchFullCityDetails, fetchStates } from './services/apiService';
+import { ResourceManager } from './components/ResourceManager';
 
 export const App = () => {
   const [currentView, setCurrentView] = useState<
@@ -28,12 +23,9 @@ export const App = () => {
   const [cities, setCities] = useState<City[]>([]);
   const [selectedCity, setSelectedCity] = useState<CityFullDetails | null>(null);
 
-  const [resources, setResources] = useState<Resource[]>([]);
-
   const [loadingStates, setLoadingStates] = useState(true);
   const [loadingCities, setLoadingCities] = useState(false);
   const [loadingCity, setLoadingCity] = useState(false);
-  const [loadingResources, setLoadingResources] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -56,26 +48,6 @@ export const App = () => {
     };
 
     loadStates();
-  }, []);
-
-  useEffect(() => {
-    const loadResources = async () => {
-      setLoadingResources(true);
-      try {
-        const data = await fetchResources();
-        setResources(data);
-      } catch (e) {
-        if (e instanceof Error) {
-          setError(e.message);
-        } else {
-          setError('In fetchResources - An unknown error occured');
-        }
-        console.error(`Failed to fetch Resources: ${e}`);
-      } finally {
-        setLoadingResources(false);
-      }
-    };
-    loadResources();
   }, []);
 
   const handleSelectState = async (state: State) => {
@@ -190,8 +162,7 @@ export const App = () => {
         );
 
       case 'resources':
-        if (loadingResources) return <p>Loading Resources...</p>;
-        return <Resources resources={resources} />;
+        return <ResourceManager />;
 
       default:
         return <div>something has gone wrong</div>;

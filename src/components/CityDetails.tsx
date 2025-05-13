@@ -1,5 +1,5 @@
-import { ReactNode } from 'react';
 import { CityFullDetails, EventWithPlaceDetails } from '../types';
+import { ReactNode } from 'react';
 import {
   Airport,
   Place,
@@ -39,10 +39,21 @@ const sectionContainer = <T extends { id: string | number }>(
 };
 
 export const CityDetails = ({ city }: CityDetailsProps) => {
-  console.log('CITY', city);
+  const CityForm = () => {
+    return (
+      <div>
+        <p>hello</p>
+        <form>
+          <label htmlFor="city-name">Name</label>
+          <input id="city-name" type="text" className="border-2 border-black" />
+        </form>
+      </div>
+    );
+  };
 
   return (
     <div className="flex flex-col gap-2">
+      <CityForm />
       <p>
         {city?.name}, {city?.state.name}
       </p>
