@@ -10,7 +10,7 @@ import { CityDetails } from './components/CityDetails';
 import { City, State } from '@prisma/client';
 import { CityFullDetails } from './types';
 import { fetchCities, fetchFullCityDetails, fetchStates } from './services/apiService';
-import { ResourceManager } from './components/ResourceManager';
+import { ResourceManager } from './components/Resources/ResourceManager';
 
 export const App = () => {
   const [currentView, setCurrentView] = useState<
