@@ -7,8 +7,8 @@ import {
   deleteResource,
   fetchResources,
   updateResource
-} from '../services/resourceApiService';
-import { ResourceFormData } from '../types';
+} from '../../services/resourceApiService';
+import { ResourceFormData } from '../../types';
 
 export const ResourceManager = () => {
   const [resources, setResources] = useState<Resource[]>([]);

@@ -1,6 +1,6 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { Resource } from '@prisma/client';
-import { ResourceFormData } from '../types';
+import { ResourceFormData } from '../../types';
 
 type ResourceFormProps = {
   onSubmit: (data: ResourceFormData, id?: number) => Promise<void>;
