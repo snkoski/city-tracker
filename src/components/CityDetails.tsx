@@ -1,4 +1,4 @@
-import { CityFullDetails, EventWithPlaceDetails } from '../types';
+import { CityFullDetails } from '../types';
 import { ReactNode } from 'react';
 import {
   Airport,
@@ -10,6 +10,7 @@ import {
   AllergenLevel
 } from '@prisma/client';
 import { getLocalizedMonthName } from '../utils/dateUtils';
+import { EventList } from './Events/EventList';
 
 type CityDetailsProps = {
   city: CityFullDetails | null;
@@ -118,36 +119,7 @@ export const CityDetails = ({ city }: CityDetailsProps) => {
         },
         'row'
       )}
-      {sectionContainer<EventWithPlaceDetails>('Events', city?.events, (event) => {
-        return (
-          <li key={event.id}>
-            <div>
-              <p>
-                <strong>{event.name}</strong>
-                {event.place?.name && ` @ ${event.place.name}`}
-              </p>
-              {event.date && <p>{event.date.toString()}</p>}
-              {(event.startTime || event.endTime) && (
-                <p>
-                  {event.startTime && `From: ${event.startTime} `}
-                  {event.endTime && `Until: ${event.endTime}`}
-                </p>
-              )}
-              {event.website && (
-                <a href={`${event.website}`} target="_blank" rel="noopener noreferrer">
-                  <p>Website</p>
-                </a>
-              )}
-              {event.ticketUrl && (
-                <a href={`${event.ticketUrl}`} target="_blank" rel="noopener noreferrer">
-                  <p>Tickets</p>
-                </a>
-              )}
-              {event.details && <p>{event.details}</p>}
-            </div>
-          </li>
-        );
-      })}
+      <EventList events={city?.events || []} />
       {sectionContainer<AgeDemographic>(
         'Age Demographics',
         city?.ageDemographics,
