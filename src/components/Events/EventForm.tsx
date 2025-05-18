@@ -7,10 +7,16 @@ type EventFormProps = {
   onCancel: () => void;
   initialData?: Event | null;
   isLoading: boolean;
+  cityId: number;
 };
 
-export const EventForm = ({ onSubmit, onCancel, initialData, isLoading }: EventFormProps) => {
-  const [cityId, setCity] = useState<number | null>(null);
+export const EventForm = ({
+  onSubmit,
+  onCancel,
+  initialData,
+  isLoading,
+  cityId
+}: EventFormProps) => {
   const [placeId, setPlace] = useState<number | null>(null);
   const [name, setName] = useState<string>('');
   const [dateTimeString, setDateTimeString] = useState<string>('');
@@ -24,7 +30,6 @@ export const EventForm = ({ onSubmit, onCancel, initialData, isLoading }: EventF
 
   useEffect(() => {
     if (initialData) {
-      setCity(initialData.cityId);
       setPlace(initialData.placeId);
       setName(initialData.name);
       setDateTimeString(initialData.date.toString());
@@ -34,7 +39,6 @@ export const EventForm = ({ onSubmit, onCancel, initialData, isLoading }: EventF
       setWebsite(initialData.website);
       setTicketUrl(initialData.ticketUrl);
     } else {
-      setCity(null);
       setPlace(null);
       setName('');
       setDateTimeString('');
@@ -44,9 +48,11 @@ export const EventForm = ({ onSubmit, onCancel, initialData, isLoading }: EventF
       setWebsite('');
       setTicketUrl('');
     }
-  }, [initialData]);
+  }, [initialData, cityId]);
 
   const handleSubmit = async (event: FormEvent) => {
+    console.log('event form handle submit start');
+
     event.preventDefault();
     if (!name || !dateTimeString) {
       alert("How can I go if I don't have basic information like a name or a date you goober...");
@@ -55,16 +61,19 @@ export const EventForm = ({ onSubmit, onCancel, initialData, isLoading }: EventF
     const formData: EventFormData = {
       name,
       date: new Date(dateTimeString),
-      cityId: cityId || null,
-      placeId: placeId || null,
+      cityId,
+      placeId: placeId || 0,
       startTime: startTimeString ? new Date(startTimeString) : null,
       endTime: endTimeString ? new Date(startTimeString) : null,
       details: details || null,
       website: website || null,
       ticketUrl: ticketUrl || null
     };
+    console.log('event form after form data creation', formData);
+
     await onSubmit(formData, initialData?.id);
   };
+
   return (
     <form onSubmit={handleSubmit}>
       <h3>{isEditMode ? 'Edit Event' : 'New Event'}</h3>
@@ -112,3 +121,12 @@ export const EventForm = ({ onSubmit, onCancel, initialData, isLoading }: EventF
     </form>
   );
 };
+// name,
+// date: new Date(dateTimeString),
+// cityId: cityId || null,
+// placeId: placeId || null,
+// startTime: startTimeString ? new Date(startTimeString) : null,
+// endTime: endTimeString ? new Date(startTimeString) : null,
+// details: details || null,
+// website: website || null,
+// ticketUrl: ticketUrl || null

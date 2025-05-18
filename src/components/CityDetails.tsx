@@ -10,7 +10,7 @@ import {
   AllergenLevel
 } from '@prisma/client';
 import { getLocalizedMonthName } from '../utils/dateUtils';
-import { EventList } from './Events/EventList';
+import { EventManager } from './Events/EventManager';
 
 type CityDetailsProps = {
   city: CityFullDetails | null;
@@ -119,7 +119,7 @@ export const CityDetails = ({ city }: CityDetailsProps) => {
         },
         'row'
       )}
-      <EventList events={city?.events || []} />
+      {city && <EventManager cityId={city.id} />}
       {sectionContainer<AgeDemographic>(
         'Age Demographics',
         city?.ageDemographics,

@@ -8,6 +8,7 @@ export const fetchResources = async (): Promise<Resource[]> => {
   if (!response.ok) {
     throw new Error(`In fetchResources - HTTP error! status: ${response.status}`);
   }
+
   const data = await response.json();
   return data as Resource[];
 };
@@ -71,7 +72,7 @@ export const deleteResource = async (id: number): Promise<void> => {
   });
   if (!response.ok) {
     throw new Error(
-      `In deleteResource - HTTP error! status:${response.status} ${response.statusText}`
+      `In deleteResource - HTTP error! status: ${response.status} ${response.statusText}`
     );
   }
 };
