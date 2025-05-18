@@ -37,7 +37,7 @@ export const createPlace = async (PlaceData: PlaceFormData): Promise<Place> => {
       errorData = await response.json();
     } catch {
       throw new Error(
-        `In createEventPlace - HTTP error status: ${response.status}, message: ${
+        `In createPlace - HTTP error status: ${response.status}, message: ${
           errorData?.message || response.statusText
         }`
       );
