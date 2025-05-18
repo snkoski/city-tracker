@@ -1,4 +1,4 @@
-import { Event, Prisma, Resource } from '@prisma/client';
+import { Event, MonthlyWeather, Prisma, Resource } from '@prisma/client';
 
 export type CityFullDetails = Prisma.CityGetPayload<{
   include: {
@@ -27,3 +27,5 @@ export type EventWithPlaceDetails = Prisma.EventGetPayload<{
 export type ResourceFormData = Omit<Resource, 'id' | 'createdAt' | 'updatedAt'>;
 
 export type EventFormData = Omit<Event, 'id' | 'createdAt' | 'updatedAt'>;
+
+export type MonthlyWeatherFormDaa = Omit<MonthlyWeather, 'id' | 'createdAt' | 'updatedAt'>;
