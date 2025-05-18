@@ -23,7 +23,7 @@ export const fetchCityNeighborhoods = async (cityId: number): Promise<Neighborho
   return data as Neighborhood[];
 };
 
-export const createEventNeighborhood = async (
+export const createNeighborhood = async (
   neighborhoodData: NeighborhoodFormData
 ): Promise<Neighborhood> => {
   const response = await fetch(`${API_BASE_URL}/neighborhoods`, {
@@ -39,7 +39,7 @@ export const createEventNeighborhood = async (
       errorData = await response.json();
     } catch {
       throw new Error(
-        `In createEventNeighborhood - HTTP error status: ${response.status}, message: ${
+        `In createNeighborhood - HTTP error status: ${response.status}, message: ${
           errorData?.message || response.statusText
         }`
       );
