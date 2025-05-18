@@ -4,7 +4,7 @@ import { AgeDemographicFormData } from '../types';
 const API_BASE_URL = 'http://localhost:3000';
 
 export const fetchAllAgeDemographics = async (): Promise<AgeDemographic[]> => {
-  const response = await fetch(`${API_BASE_URL}ageDemographics`);
+  const response = await fetch(`${API_BASE_URL}/ageDemographics`);
   if (!response.ok) {
     throw new Error(`In fetchAllAgeDemographics - HTTP error! status: ${response.status}`);
   }
@@ -14,7 +14,7 @@ export const fetchAllAgeDemographics = async (): Promise<AgeDemographic[]> => {
 };
 
 export const fetchCityAgeDemographics = async (cityId: number): Promise<AgeDemographic[]> => {
-  const response = await fetch(`${API_BASE_URL}ageDemographics?cityId=${cityId}`);
+  const response = await fetch(`${API_BASE_URL}/ageDemographics?cityId=${cityId}`);
   if (!response.ok) {
     throw new Error(`In fetchCityAgeDemographics - HTTP error! status: ${response.status}`);
   }
@@ -26,7 +26,7 @@ export const fetchCityAgeDemographics = async (cityId: number): Promise<AgeDemog
 export const createAgeDemographic = async (
   AgeDemographicData: AgeDemographicFormData
 ): Promise<AgeDemographic> => {
-  const response = await fetch(`${API_BASE_URL}ageDemographics`, {
+  const response = await fetch(`${API_BASE_URL}/ageDemographics`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -54,7 +54,7 @@ export const updateAgeDemographic = async (
   AgeDemographicData: AgeDemographicFormData,
   id: number
 ): Promise<AgeDemographic> => {
-  const response = await fetch(`${API_BASE_URL}ageDemographics/${id}`, {
+  const response = await fetch(`${API_BASE_URL}/ageDemographics/${id}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json'
@@ -79,7 +79,7 @@ export const updateAgeDemographic = async (
 };
 
 export const deleteAgeDemographic = async (id: number): Promise<void> => {
-  const response = await fetch(`${API_BASE_URL}ageDemographics/${id}`, {
+  const response = await fetch(`${API_BASE_URL}/ageDemographics/${id}`, {
     method: 'DELETE'
   });
   if (!response.ok) {
