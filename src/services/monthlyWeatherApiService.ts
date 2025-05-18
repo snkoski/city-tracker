@@ -1,5 +1,5 @@
 import { MonthlyWeather } from '@prisma/client';
-import { EventFormData, MonthlyWeatherFormDaa } from '../types';
+import { MonthlyWeatherFormData } from '../types';
 
 const API_BASE_URL = 'http://localhost:3000';
 
@@ -24,7 +24,7 @@ export const fetchCityMonthlyWeather = async (cityId: number): Promise<MonthlyWe
 };
 
 export const createMonthlyWeather = async (
-  monthlyWeatherData: MonthlyWeatherFormDaa
+  monthlyWeatherData: MonthlyWeatherFormData
 ): Promise<MonthlyWeather> => {
   const response = await fetch(`${API_BASE_URL}/monthlyWeather`, {
     method: 'POST',
@@ -52,7 +52,7 @@ export const createMonthlyWeather = async (
 };
 
 export const updateMonthlyWeather = async (
-  monthlyWeatherData: EventFormData,
+  monthlyWeatherData: MonthlyWeatherFormData,
   id: number
 ): Promise<MonthlyWeather> => {
   const response = await fetch(`${API_BASE_URL}/monthlyWeather/${id}`, {

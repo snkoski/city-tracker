@@ -40,7 +40,7 @@ export type ResourceFormData = Omit<Resource, 'id' | 'createdAt' | 'updatedAt'>;
 
 export type EventFormData = Omit<Event, 'id' | 'createdAt' | 'updatedAt'>;
 
-export type MonthlyWeatherFormDaa = Omit<MonthlyWeather, 'id' | 'createdAt' | 'updatedAt'>;
+export type MonthlyWeatherFormData = Omit<MonthlyWeather, 'id' | 'createdAt' | 'updatedAt'>;
 
 export type CityFormData = Omit<City, 'id' | 'createdAt' | 'updatedAt'>;
 
