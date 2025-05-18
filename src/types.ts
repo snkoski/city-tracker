@@ -1,4 +1,16 @@
-import { Event, MonthlyWeather, Prisma, Resource } from '@prisma/client';
+import {
+  AgeDemographic,
+  Airport,
+  AllergenLevel,
+  City,
+  EthnicDemographic,
+  Event,
+  MonthlyWeather,
+  Neighborhood,
+  Place,
+  Prisma,
+  Resource
+} from '@prisma/client';
 
 export type CityFullDetails = Prisma.CityGetPayload<{
   include: {
@@ -29,3 +41,17 @@ export type ResourceFormData = Omit<Resource, 'id' | 'createdAt' | 'updatedAt'>;
 export type EventFormData = Omit<Event, 'id' | 'createdAt' | 'updatedAt'>;
 
 export type MonthlyWeatherFormDaa = Omit<MonthlyWeather, 'id' | 'createdAt' | 'updatedAt'>;
+
+export type CityFormData = Omit<City, 'id' | 'createdAt' | 'updatedAt'>;
+
+export type NeighborhoodFormData = Omit<Neighborhood, 'id' | 'createdAt' | 'updatedAt'>;
+
+export type PlaceFormData = Omit<Place, 'id' | 'createdAt' | 'updatedAt'>;
+
+export type AgeDemographicFormData = Omit<AgeDemographic, 'id' | 'createdAt' | 'updatedAt'>;
+
+export type EthnicDemographicFormData = Omit<EthnicDemographic, 'id' | 'createdAt' | 'updatedAt'>;
+
+export type AirportFormData = Omit<Airport, 'id' | 'createdAt' | 'updatedAt'>;
+
+export type AllergenLevelFormData = Omit<AllergenLevel, 'id' | 'createdAt' | 'updatedAt'>;
