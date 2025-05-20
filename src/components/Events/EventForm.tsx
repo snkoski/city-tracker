@@ -23,8 +23,8 @@ export const EventForm = ({
   const [startTimeString, setStartTimeString] = useState<string>('');
   const [endTimeString, setEndTimeString] = useState<string>('');
   const [details, setDetails] = useState<string>('');
-  const [website, setWebsite] = useState<string | null>('');
-  const [ticketUrl, setTicketUrl] = useState<string | null>('');
+  const [website, setWebsite] = useState<string>('');
+  const [ticketUrl, setTicketUrl] = useState<string>('');
 
   const isEditMode = Boolean(initialData);
 
@@ -36,8 +36,8 @@ export const EventForm = ({
       setStartTimeString(initialData.startTime?.toString() || '');
       setEndTimeString(initialData.endTime?.toString() || '');
       setDetails(initialData.details || '');
-      setWebsite(initialData.website);
-      setTicketUrl(initialData.ticketUrl);
+      setWebsite(initialData.website || '');
+      setTicketUrl(initialData.ticketUrl || '');
     } else {
       setPlace(null);
       setName('');
@@ -99,6 +99,28 @@ export const EventForm = ({
           onChange={(e) => setDateTimeString(e.target.value)}
         />
       </div>
+      {/* <div>
+        <label htmlFor="startTime">Start Time</label>
+        <input
+          type="time"
+          name="startTime"
+          id="startTime"
+          disabled={isLoading}
+          value={startTimeString}
+          onChange={(e) => setStartTimeString(e.target.value)}
+        />
+      </div>
+      <div>
+        <label htmlFor="endTime">End Time</label>
+        <input
+          type="time"
+          name="endTime"
+          id="endTime"
+          disabled={isLoading}
+          value={endTimeString}
+          onChange={(e) => setEndTimeString(e.target.value)}
+        />
+      </div> */}
       <div>
         <label htmlFor="details">Details</label>
         <input
@@ -108,6 +130,28 @@ export const EventForm = ({
           disabled={isLoading}
           value={details}
           onChange={(e) => setDetails(e.target.value)}
+        />
+      </div>
+      <div>
+        <label htmlFor="website">Website</label>
+        <input
+          type="text"
+          name="website"
+          id="website"
+          disabled={isLoading}
+          value={website}
+          onChange={(e) => setWebsite(e.target.value)}
+        />
+      </div>
+      <div>
+        <label htmlFor="ticketUrl">Ticket URL</label>
+        <input
+          type="text"
+          name="ticketUrl"
+          id="ticketUrl"
+          disabled={isLoading}
+          value={ticketUrl}
+          onChange={(e) => setTicketUrl(e.target.value)}
         />
       </div>
       <div>
@@ -121,12 +165,3 @@ export const EventForm = ({
     </form>
   );
 };
-// name,
-// date: new Date(dateTimeString),
-// cityId: cityId || null,
-// placeId: placeId || null,
-// startTime: startTimeString ? new Date(startTimeString) : null,
-// endTime: endTimeString ? new Date(startTimeString) : null,
-// details: details || null,
-// website: website || null,
-// ticketUrl: ticketUrl || null
