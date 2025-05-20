@@ -1,6 +1,14 @@
 {
   "states": [
     {
+      "id": 0,
+      "name": "N/A",
+      "incomeTaxRate": 0,
+      "population": 0,
+      "createdAt": "2024-01-15T10:00:00.000Z",
+      "updatedAt": "2025-03-10T12:00:00.000Z"
+    },
+    {
       "id": 1,
       "name": "California",
       "incomeTaxRate": 0.093,
@@ -18,6 +26,15 @@
     }
   ],
   "cities": [
+    {
+      "id": 0,
+      "name": "N/A",
+      "stateId": 0,
+      "population": 0,
+      "salesTaxRate": 0,
+      "createdAt": "2024-03-01T08:00:00.000Z",
+      "updatedAt": "2025-05-01T14:00:00.000Z"
+    },
     {
       "id": 101,
       "name": "Los Angeles",
@@ -193,6 +210,13 @@
       "updatedAt": "2025-04-15T11:00:00.000Z"
     },
     {
+      "id": 0,
+      "cityId": 0,
+      "name": "not available for now",
+      "createdAt": "2024-03-20T10:00:00.000Z",
+      "updatedAt": "2025-04-15T11:00:00.000Z"
+    },
+    {
       "id": 1002,
       "cityId": 101,
       "name": "Angel City Brewery",
@@ -283,6 +307,20 @@
       "ticketUrl": null,
       "createdAt": "2025-05-03T12:00:00.000Z",
       "updatedAt": "2025-05-03T12:00:00.000Z"
+    },
+    {
+      "cityId": 101,
+      "placeId": 1002,
+      "name": "NYC Marathon",
+      "date": "2025-11-02T08:00:00.000Z",
+      "startTime": "2025-11-02T08:00:00.000Z",
+      "endTime": "2025-11-02T17:00:00.000Z",
+      "details": "Annual marathon through the five boroughs of NYC.",
+      "website": "https://www.nyrr.org/tcsnycmarathon",
+      "ticketUrl": "https://www.ticketmaster.com/thefillmore",
+      "createdAt": "2025-05-03T12:00:00.000Z",
+      "updatedAt": "2025-05-03T12:00:00.000Z",
+      "id": 4
     }
   ],
   "ageDemographics": [
@@ -449,25 +487,11 @@
       "updatedAt": "2024-05-01T00:00:00.000Z"
     },
     {
-      "title": "test resource",
-      "url": "https://www.test.com",
-      "description": "a test to see if it works",
-      "category": "fun",
-      "id": 4
-    },
-    {
-      "title": "useCallbacked1",
-      "url": "https://www.example.com",
-      "description": "another test",
-      "category": "fun",
-      "id": 5
-    },
-    {
-      "title": "atrs",
-      "url": "tras",
-      "description": "art",
-      "category": "aaaa",
-      "id": 6
+      "title": "same file",
+      "url": "http",
+      "description": "a tse",
+      "category": "col",
+      "id": 3
     }
   ],
   "allergenLevels": [
