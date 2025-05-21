@@ -1,4 +1,4 @@
-import { City, Resource, State } from '@prisma/client';
+import { City, State } from '@prisma/client';
 import { CityFullDetails } from '../types';
 
 const API_BASE_URL = 'http://localhost:3001/api';
@@ -15,17 +15,8 @@ export const fetchStates = async (): Promise<State[]> => {
   return data;
 };
 
-export const fetchResources = async (): Promise<Resource[]> => {
-  const response = await fetch(`${API_BASE_URL}/resources`);
-  if (!response.ok) {
-    throw new Error(`In fetchResources - HTTP error! status: ${response.status}`);
-  }
-  const data = await response.json();
-  return data;
-};
-
 export const fetchCities = async (stateId: number): Promise<City[]> => {
-  const response = await fetch(`${API_BASE_URL}/cities?stateId=${stateId}`);
+  const response = await fetch(`${API_BASE_URL}/states/${stateId}/cities`);
   if (!response.ok) {
     throw new Error(`In fetchCities - HTTP error! status: ${response.status}`);
   }
