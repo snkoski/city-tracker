@@ -1,7 +1,7 @@
 import { AgeDemographic } from '@prisma/client';
 import { AgeDemographicFormData } from '../types';
 
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = 'http://localhost:3001/api';
 
 export const fetchAllAgeDemographics = async (): Promise<AgeDemographic[]> => {
   const response = await fetch(`${API_BASE_URL}/ageDemographics`);

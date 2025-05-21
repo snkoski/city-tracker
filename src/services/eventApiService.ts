@@ -1,7 +1,7 @@
 import { Event } from '@prisma/client';
 import { EventFormData, EventWithPlaceDetails } from '../types';
 
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = 'http://localhost:3001/api';
 
 export const fetchAllEvents = async (): Promise<Event[]> => {
   const response = await fetch(`${API_BASE_URL}/events`);

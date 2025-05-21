@@ -63,6 +63,20 @@ app.get('/api/states', async (req, res) => {
   }
 });
 
-app.listen(3000, () => {
-  console.log('Server running on port 3000');
+app.get('/api/resources', async (req, res) => {
+  try {
+    const resources = await prisma.resource.findMany({
+      orderBy: {
+        id: 'asc'
+      }
+    });
+    res.json(resources);
+  } catch (error) {
+    console.error(`Error fetching resources: ${error}`);
+    res.status(500).json({ error: 'Failed to fetch resources from postgres' });
+  }
+});
+
+app.listen(3001, () => {
+  console.log('Server running on port 3001');
 });

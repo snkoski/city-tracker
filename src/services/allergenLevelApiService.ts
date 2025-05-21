@@ -1,7 +1,7 @@
 import { AllergenLevel } from '@prisma/client';
 import { AllergenLevelFormData } from '../types';
 
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = 'http://localhost:3001/api';
 
 export const fetchAllAllergenLevels = async (): Promise<AllergenLevel[]> => {
   const response = await fetch(`${API_BASE_URL}/allergenLevels`);

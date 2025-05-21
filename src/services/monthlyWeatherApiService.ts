@@ -1,7 +1,7 @@
 import { MonthlyWeather } from '@prisma/client';
 import { MonthlyWeatherFormData } from '../types';
 
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = 'http://localhost:3001/api';
 
 export const fetchAllMonthlyWeather = async (): Promise<MonthlyWeather[]> => {
   const response = await fetch(`${API_BASE_URL}/monthlyWeather`);

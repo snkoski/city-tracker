@@ -1,7 +1,7 @@
 import { Airport } from '@prisma/client';
 import { AirportFormData } from '../types';
 
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = 'http://localhost:3001/api';
 
 export const fetchAllAirports = async (): Promise<Airport[]> => {
   const response = await fetch(`${API_BASE_URL}/airports`);
