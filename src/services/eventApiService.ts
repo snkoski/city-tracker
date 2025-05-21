@@ -14,7 +14,7 @@ export const fetchAllEvents = async (): Promise<Event[]> => {
 };
 
 export const fetchCityEvents = async (cityId: number): Promise<EventWithPlaceDetails[]> => {
-  const response = await fetch(`${API_BASE_URL}/events?cityId=${cityId}&_expand=place`);
+  const response = await fetch(`${API_BASE_URL}/cities/${cityId}/events`);
   if (!response.ok) {
     throw new Error(`In fetchCityEvents - HTTP error! status: ${response.status}`);
   }

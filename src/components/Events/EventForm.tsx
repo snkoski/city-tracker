@@ -62,7 +62,7 @@ export const EventForm = ({
       name,
       date: new Date(dateTimeString),
       cityId,
-      placeId: placeId || 0,
+      placeId: placeId || null,
       startTime: startTimeString ? new Date(startTimeString) : null,
       endTime: endTimeString ? new Date(startTimeString) : null,
       details: details || null,

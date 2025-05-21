@@ -2,7 +2,7 @@ import { City, State } from '@prisma/client';
 import { CityFullDetails } from '../types';
 
 const API_BASE_URL = 'http://localhost:3001/api';
-const IS_MOCK_SERVER = true; // set this to false when using real data
+const IS_MOCK_SERVER = false; // set this to false when using real data
 
 export const fetchStates = async (): Promise<State[]> => {
   // Fetch data from the json-server endpoint for states
@@ -25,9 +25,7 @@ export const fetchCities = async (stateId: number): Promise<City[]> => {
 };
 
 export const fetchFullCityDetails = async (cityId: number): Promise<CityFullDetails> => {
-  const response = await fetch(
-    `http://localhost:3001/api/cities/${cityId}?_embed=places&_embed=events&_embed=neighborhoods&_embed=monthlyWeather&_embed=ageDemographics&_embed=ethnicDemographics&_embed=airports&_embed=allergenLevels&_expand=state`
-  );
+  const response = await fetch(`${API_BASE_URL}/cities/${cityId}`);
   if (!response.ok) {
     throw new Error(`in fetchCityDetails - HTTP error! status: ${response.status}`);
   }
