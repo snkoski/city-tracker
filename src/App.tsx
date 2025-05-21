@@ -112,7 +112,7 @@ export const App = () => {
           return <p>Loading states...</p>;
         }
         return (
-          <main className="flex flex-row gap-2">
+          <main className="flex flex-row gap-2 max-w-dvw flex-wrap flex-1">
             {states.length > 0 ? (
               states.map((state) => (
                 <StateContainer key={state.id}>
