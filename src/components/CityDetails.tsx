@@ -3,14 +3,14 @@ import { ReactNode } from 'react';
 import {
   Airport,
   Place,
-  MonthlyWeather,
   Neighborhood,
   AgeDemographic,
   EthnicDemographic,
   AllergenLevel
 } from '@prisma/client';
-import { getLocalizedMonthName } from '../utils/dateUtils';
 import { EventManager } from './Events/EventManager';
+import { MonthlyWeatherManager } from './MonthlyWeather/MonthlyWeatherManager';
+import { getLocalizedMonthName } from '../utils/dateUtils';
 
 type CityDetailsProps = {
   city: CityFullDetails | null;
@@ -100,25 +100,7 @@ export const CityDetails = ({ city }: CityDetailsProps) => {
           </li>
         );
       })}
-      {sectionContainer<MonthlyWeather>(
-        'Monthly Weather Averages',
-        city?.monthlyWeather,
-        (monthlyWeather) => {
-          return (
-            <li key={monthlyWeather.id} className="flex">
-              <div className="flex flex-col border-amber-600 border-2 p-1 rounded-md">
-                <p>{getLocalizedMonthName(monthlyWeather.month)}</p>
-                <p>Temp: {monthlyWeather.avgTempF?.toString()}&deg; F</p>
-                <p>High: {monthlyWeather.avgHighTempF?.toString()}&deg; F</p>
-                <p>Low: {monthlyWeather.avgLowTempF?.toString()}&deg; F</p>
-                <p>Rain Fall: {monthlyWeather.avgRainfallInch?.toString()}"</p>
-                <p>Humidity: {monthlyWeather.humiditiy?.toString()}%</p>
-              </div>
-            </li>
-          );
-        },
-        'row'
-      )}
+      {city && <MonthlyWeatherManager cityId={city.id} />}
       {city && <EventManager cityId={city.id} />}
       {sectionContainer<AgeDemographic>(
         'Age Demographics',
