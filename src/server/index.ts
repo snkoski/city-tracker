@@ -383,6 +383,36 @@ app.delete('/api/resources/:id', async (req, res) => {
   }
 });
 
+// Monthly Weather
+app.get('/api/cities/:cityId/monthlyWeather', async (req, res) => {
+  const cityId = parseInt(req.params.cityId, 10);
+  try {
+    if (isNaN(cityId)) {
+      res.status(400).json({ error: 'Invalid stateId format' });
+    }
+
+    const cityExists = await prisma.city.findUnique({
+      where: {
+        id: cityId
+      }
+    });
+
+    if (!cityExists) {
+      res.status(404).json({ error: `City with ID ${cityId} does not exist` });
+    }
+
+    const monthlyWeather = await prisma.monthlyWeather.findMany({
+      where: { cityId: cityId },
+      orderBy: { month: 'asc' }
+    });
+
+    res.json(monthlyWeather);
+  } catch (error) {
+    console.error(`Error fetching monthlyWeather for city ID ${cityId}: ${error}`);
+    res.status(500).json({ error: 'Failed to fetch monthlyWeather for the city' });
+  }
+});
+
 app.listen(3001, () => {
   console.log('Server running on port 3001');
 });

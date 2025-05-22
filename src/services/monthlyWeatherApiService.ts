@@ -14,7 +14,7 @@ export const fetchAllMonthlyWeather = async (): Promise<MonthlyWeather[]> => {
 };
 
 export const fetchCityMonthlyWeather = async (cityId: number): Promise<MonthlyWeather[]> => {
-  const response = await fetch(`${API_BASE_URL}/MonthlyWeather?cityId=${cityId}`);
+  const response = await fetch(`${API_BASE_URL}/cities/${cityId}/monthlyWeather`);
   if (!response.ok) {
     throw new Error(`In fetchCityMonthlyWeather - HTTP error! status: ${response.status}`);
   }
