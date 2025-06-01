@@ -734,8 +734,8 @@ app.get('/api/cities/:cityId/ageDemographics', async (req, res) => {
 });
 
 app.post('/api/ageDemographics', async (req, res) => {
+  console.log(`Received ageDemographic data: ${req.body}`);
   try {
-    console.log(`Received ageDemographic data: ${req.body}`);
     const ageDemographic = await prisma.ageDemographic.create({
       data: {
         cityId: req.body.cityId,
@@ -744,7 +744,7 @@ app.post('/api/ageDemographics', async (req, res) => {
       }
     });
     console.log(`Created ageDemographic: ${ageDemographic}`);
-    res.json(ageDemographic);
+    res.status(201).json(ageDemographic);
   } catch (error) {
     console.error(`Error creating ageDemographic: ${error}`);
     res.status(500).json({
@@ -768,7 +768,7 @@ app.patch('/api/ageDemographics/:id', async (req, res) => {
     res.status(400).json({ error: 'No update data provided.' });
   }
   try {
-    const updatedAgeDemographic = await prisma.event.update({
+    const updatedAgeDemographic = await prisma.ageDemographic.update({
       where: {
         id: ageDemographicId
       },
@@ -869,17 +869,17 @@ app.get('/api/cities/:cityId/ethnicDemographics', async (req, res) => {
 });
 
 app.post('/api/ethnicDemographics', async (req, res) => {
+  console.log(`Received ethnicDemographic data: ${req.body}`);
   try {
-    console.log(`Received ethnicDemographic data: ${req.body}`);
     const ethnicDemographic = await prisma.ethnicDemographic.create({
       data: {
         cityId: req.body.cityId,
-        group: req.body.string,
-        percent: req.body.Decimal
+        group: req.body.group,
+        percent: req.body.percent
       }
     });
     console.log(`Created ethnicDemographic: ${ethnicDemographic}`);
-    res.json(ethnicDemographic);
+    res.status(201).json(ethnicDemographic);
   } catch (error) {
     console.error(`Error creating ethnicDemographic: ${error}`);
     res.status(500).json({
@@ -903,146 +903,7 @@ app.patch('/api/ethnicDemographics/:id', async (req, res) => {
     res.status(400).json({ error: 'No update data provided.' });
   }
   try {
-    const updatedEthnicDemographic = await prisma.event.update({
-      where: {
-        id: ethnicDemographicId
-      },
-      data: updateData
-    });
-    res.status(200).json(updatedEthnicDemographic);
-  } catch (error: unknown) {
-    console.error(`Error updating ethnicDemographic with ID ${ethnicDemographicId}:`, error);
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      if (error.code === 'P2025') {
-        res
-          .status(404)
-          .json({ error: `ethnicDemographic with ID ${ethnicDemographicId} not found.` });
-      }
-
-      if (error.code === 'P2002') {
-        res.status(409).json({
-          error: 'Update failed due to a conflict (e.g., unique field already exists).',
-          details: `The change violates a unique constraint on ${
-            Array.isArray(error.meta?.target)
-              ? (error.meta?.target as string[]).join(', ')
-              : error.meta?.target || 'a field'
-          }.`
-        });
-      }
-      res.status(500).json({
-        error: 'Failed to update ethnicDemographic due to a database error.',
-        prismaCode: error.code
-      });
-    } else if (error instanceof Error) {
-      // Handle generic JavaScript errors (these have a .message property)
-      res
-        .status(500)
-        .json({ error: 'Failed to update ethnicDemographic.', details: error.message });
-    } else {
-      // Handle other types of thrown values (e.g., if a string was thrown)
-      res.status(500).json({ error: 'An unexpected error occurred.' });
-    }
-  }
-});
-
-app.delete('/api/ethnicDemographics/:id', async (req, res) => {
-  const ethnicDemographicId = parseInt(req.params.id, 10);
-  if (isNaN(ethnicDemographicId)) {
-    res.status(400).json({ error: 'Invalid ethnicDemographic ID format. ID must be a number.' });
-  }
-  try {
-    await prisma.ethnicDemographic.delete({
-      where: { id: ethnicDemographicId }
-    });
-    res.status(204).send();
-  } catch (error) {
-    res.status(500).json({
-      error: 'Failed to delete ethnicDemographic',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    });
-  }
-});
-
-// Ethnic Demographics
-app.get('/api/ethnicDemographics', async (req, res) => {
-  try {
-    const ethnicDemographics = await prisma.ethnicDemographic.findMany({
-      orderBy: {
-        id: 'asc'
-      }
-    });
-    res.json(ethnicDemographics);
-  } catch (error) {
-    console.error(`Error fetching ethnicDemographics: ${error}`);
-    res.status(500).json({ error: 'Failed to fetch ethnicDemographics from postgres' });
-  }
-});
-
-app.get('/api/cities/:cityId/ethnicDemographics', async (req, res) => {
-  const cityId = parseInt(req.params.cityId, 10);
-  try {
-    if (isNaN(cityId)) {
-      res.status(400).json({ error: 'Invalid stateId format' });
-    }
-
-    const cityExists = await prisma.city.findUnique({
-      where: {
-        id: cityId
-      }
-    });
-
-    if (!cityExists) {
-      res.status(404).json({ error: `City with ID ${cityId} does not exist` });
-    }
-
-    const ethnicDemographics = await prisma.ethnicDemographic.findMany({
-      where: { cityId: cityId },
-      orderBy: { group: 'asc' }
-    });
-
-    res.json(ethnicDemographics);
-  } catch (error) {
-    console.error(`Error fetching ethnicDemographics for city ID ${cityId}: ${error}`);
-    res.status(500).json({ error: 'Failed to fetch ethnicDemographics for the city' });
-  }
-});
-
-app.post('/api/ethnicDemographics', async (req, res) => {
-  try {
-    console.log(`Received ethnicDemographic data: ${req.body}`);
-    const ethnicDemographic = await prisma.ethnicDemographic.create({
-      data: {
-        cityId: req.body.cityId,
-        group: req.body.string,
-        percent: req.body.Decimal
-      }
-    });
-    console.log(`Created ethnicDemographic: ${ethnicDemographic}`);
-    res.json(ethnicDemographic);
-  } catch (error) {
-    console.error(`Error creating ethnicDemographic: ${error}`);
-    res.status(500).json({
-      error: 'Failed to create ethnicDemographic',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    });
-  }
-});
-
-app.patch('/api/ethnicDemographics/:id', async (req, res) => {
-  const ethnicDemographicId = parseInt(req.params.id, 10);
-  if (isNaN(ethnicDemographicId)) {
-    res.status(400).json({ error: 'Invalid ethnicDemographic ID format. ID must be a number.' });
-  }
-
-  const { group, percent } = req.body;
-  const updateData: Partial<EthnicDemographicFormData> = {};
-  if (group !== undefined) updateData.group = group;
-  if (percent !== undefined) updateData.percent = percent;
-  if (Object.keys(updateData).length === 0) {
-    res.status(400).json({ error: 'No update data provided.' });
-  }
-  try {
-    const updatedEthnicDemographic = await prisma.event.update({
+    const updatedEthnicDemographic = await prisma.ethnicDemographic.update({
       where: {
         id: ethnicDemographicId
       },
@@ -1192,13 +1053,13 @@ app.patch('/api/allergenLevels/:id', async (req, res) => {
     res.status(400).json({ error: 'No update data provided.' });
   }
   try {
-    const updatedEthnicDemographic = await prisma.event.update({
+    const updatedAllergenLevel = await prisma.allergenLevel.update({
       where: {
         id: allergenLevelId
       },
       data: updateData
     });
-    res.status(200).json(updatedEthnicDemographic);
+    res.status(200).json(updatedAllergenLevel);
   } catch (error: unknown) {
     console.error(`Error updating allergenLevel with ID ${allergenLevelId}:`, error);
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
@@ -1349,7 +1210,7 @@ app.patch('/api/airports/:id', async (req, res) => {
     res.status(400).json({ error: 'No update data provided.' });
   }
   try {
-    const updatedAirport = await prisma.event.update({
+    const updatedAirport = await prisma.airport.update({
       where: {
         id: airportId
       },

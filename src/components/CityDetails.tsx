@@ -1,11 +1,12 @@
 import { CityFullDetails } from '../types';
 import { ReactNode } from 'react';
-import { Airport, Place, AgeDemographic, EthnicDemographic, AllergenLevel } from '@prisma/client';
+import { Airport, Place, EthnicDemographic, AllergenLevel } from '@prisma/client';
 import { EventManager } from './Events/EventManager';
 import { MonthlyWeatherManager } from './MonthlyWeather/MonthlyWeatherManager';
 import { getLocalizedMonthName } from '../utils/dateUtils';
 import { NeighborhoodManager } from './Neighborhoods/NeighborhoodManager';
 import { AgeDemographicsManager } from './AgeDemographics/AgeDemographicsManager';
+import { EthnicDemographicsManager } from './EthnicDemographics/EthnicDemographicsManager';
 
 type CityDetailsProps = {
   city: CityFullDetails | null;
@@ -80,19 +81,7 @@ export const CityDetails = ({ city }: CityDetailsProps) => {
       {city && <MonthlyWeatherManager cityId={city.id} />}
       {city && <EventManager cityId={city.id} />}
       {city && <AgeDemographicsManager cityId={city.id} />}
-      {sectionContainer<EthnicDemographic>(
-        'EthnicDemographics',
-        city?.ethnicDemographics,
-        (ethnicDemographic) => {
-          return (
-            <li key={ethnicDemographic.id}>
-              <p>
-                {ethnicDemographic.group}: {ethnicDemographic.percent.toString()}%
-              </p>
-            </li>
-          );
-        }
-      )}
+      {city && <EthnicDemographicsManager cityId={city.id} />}
       {sectionContainer<AllergenLevel>(
         'AllergenLevels',
         city?.allergenLevels,

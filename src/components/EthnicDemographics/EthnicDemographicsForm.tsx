@@ -1,63 +1,63 @@
-import { AgeDemographic } from '@prisma/client';
-import { AgeDemographicFormData } from '../../types';
+import { EthnicDemographic } from '@prisma/client';
+import { EthnicDemographicFormData } from '../../types';
 import { FormEvent, useEffect, useState } from 'react';
 
-type AgeDemographicsFormProps = {
-  onSubmit: (data: AgeDemographicFormData, id?: number) => Promise<void>;
+type EthnicDemographicsFormProps = {
+  onSubmit: (data: EthnicDemographicFormData, id?: number) => Promise<void>;
   onCancel: () => void;
-  initialData?: AgeDemographic | null;
+  initialData?: EthnicDemographic | null;
   isLoading: boolean;
   cityId: number;
 };
 
-export const AgeDemographicsForm = ({
+export const EthnicDemographicsForm = ({
   onSubmit,
   onCancel,
   initialData,
   isLoading,
   cityId
-}: AgeDemographicsFormProps) => {
-  const [ageRange, setAgeRange] = useState<string>('');
+}: EthnicDemographicsFormProps) => {
+  const [group, setGroup] = useState<string>('');
   const [percent, setPercent] = useState<string>('');
 
   const isEditMode = Boolean(initialData);
 
   useEffect(() => {
     if (initialData) {
-      setAgeRange(initialData.ageRange || '');
+      setGroup(initialData.group || '');
       setPercent(initialData.percent || '');
     } else {
-      setAgeRange('');
+      setGroup('');
       setPercent('');
     }
   }, [initialData, cityId]);
 
   const handleSubmit = async (event: FormEvent) => {
-    console.log('age demographic form handle submit start');
+    console.log('ethnic demographic form handle submit start');
 
     event.preventDefault();
-    const formData: AgeDemographicFormData = {
+    const formData: EthnicDemographicFormData = {
       cityId,
-      ageRange: ageRange,
+      group: group,
       percent: percent
     };
-    console.log('age demographic form after form data creation', formData);
+    console.log('ethnic demographic form after form data creation', formData);
 
     await onSubmit(formData, initialData?.id);
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <h3>{isEditMode ? 'Edit Age Demographic' : 'New Age Demographic'}</h3>
+      <h3>{isEditMode ? 'Edit Ethnic Demographic' : 'New Ethnic Demographic'}</h3>
       <div>
-        <label htmlFor="ageRange">Age Range</label>
+        <label htmlFor="group">Group</label>
         <input
           type="text"
-          name="ageRange"
-          id="ageRange"
+          name="group"
+          id="group"
           disabled={isLoading}
-          value={ageRange}
-          onChange={(e) => setAgeRange(e.target.value)}
+          value={group}
+          onChange={(e) => setGroup(e.target.value)}
         />
       </div>
       <div>

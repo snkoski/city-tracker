@@ -21,7 +21,7 @@ export const AgeDemographicsList = ({
       {ageDemographics.map((ageDemographic) => (
         <div key={ageDemographic.id}>
           <p>{ageDemographic.ageRange}</p>
-          <p>{ageDemographic.percent.toString()}%</p>
+          <p>{ageDemographic.percent}%</p>
           <div>
             <button type="button" onClick={() => onEdit(ageDemographic)}>
               Edit
