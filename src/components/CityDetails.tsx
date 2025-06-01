@@ -1,12 +1,12 @@
 import { CityFullDetails } from '../types';
 import { ReactNode } from 'react';
-import { Airport, Place, EthnicDemographic, AllergenLevel } from '@prisma/client';
+import { Airport, Place } from '@prisma/client';
 import { EventManager } from './Events/EventManager';
 import { MonthlyWeatherManager } from './MonthlyWeather/MonthlyWeatherManager';
-import { getLocalizedMonthName } from '../utils/dateUtils';
 import { NeighborhoodManager } from './Neighborhoods/NeighborhoodManager';
 import { AgeDemographicsManager } from './AgeDemographics/AgeDemographicsManager';
 import { EthnicDemographicsManager } from './EthnicDemographics/EthnicDemographicsManager';
+import { AllergenLevelsManager } from './AllergenLevels/AllergenLevelsManager';
 
 type CityDetailsProps = {
   city: CityFullDetails | null;
@@ -82,26 +82,7 @@ export const CityDetails = ({ city }: CityDetailsProps) => {
       {city && <EventManager cityId={city.id} />}
       {city && <AgeDemographicsManager cityId={city.id} />}
       {city && <EthnicDemographicsManager cityId={city.id} />}
-      {sectionContainer<AllergenLevel>(
-        'AllergenLevels',
-        city?.allergenLevels,
-        (allergenLevel) => {
-          return (
-            <li key={allergenLevel.id}>
-              <div className="flex flex-col border-amber-600 border-2 p-1 rounded-md">
-                <p>{getLocalizedMonthName(allergenLevel.month)}</p>
-                <p>Pollen: {allergenLevel.pollen}</p>
-                <p>Dust: {allergenLevel.dust}</p>
-                <p>Mold: {allergenLevel.mold}</p>
-                <p>Ragweed: {allergenLevel.ragweed}</p>
-                <p>Grass: {allergenLevel.grass}</p>
-                <p>Trees: {allergenLevel.trees}</p>
-              </div>
-            </li>
-          );
-        },
-        'row'
-      )}
+      {city && <AllergenLevelsManager cityId={city.id} />}
       {sectionContainer<Airport>('Airports', city?.airports, (airport) => {
         return (
           <li key={airport.id}>
