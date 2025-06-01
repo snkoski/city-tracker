@@ -1,16 +1,11 @@
 import { CityFullDetails } from '../types';
 import { ReactNode } from 'react';
-import {
-  Airport,
-  Place,
-  Neighborhood,
-  AgeDemographic,
-  EthnicDemographic,
-  AllergenLevel
-} from '@prisma/client';
+import { Airport, Place, AgeDemographic, EthnicDemographic, AllergenLevel } from '@prisma/client';
 import { EventManager } from './Events/EventManager';
 import { MonthlyWeatherManager } from './MonthlyWeather/MonthlyWeatherManager';
 import { getLocalizedMonthName } from '../utils/dateUtils';
+import { NeighborhoodManager } from './Neighborhoods/NeighborhoodManager';
+import { AgeDemographicsManager } from './AgeDemographics/AgeDemographicsManager';
 
 type CityDetailsProps = {
   city: CityFullDetails | null;
@@ -81,40 +76,10 @@ export const CityDetails = ({ city }: CityDetailsProps) => {
       <p>Transit Score: {city?.transitScore}</p>
       <p>School Rating: {city?.schoolRating}</p>
       <p>Notes: {city?.notes}</p>
-      {sectionContainer<Neighborhood>('Neighborhoods', city?.neighborhoods, (neighborhood) => {
-        return (
-          <li key={neighborhood.id}>
-            <div>
-              <p className="font-semibold">{neighborhood.name}</p>
-              {neighborhood.population && <p>Population: {neighborhood.population}</p>}
-              {neighborhood.area && <p>Area: {neighborhood.area}</p>}
-              {neighborhood.description && <p>Description: {neighborhood.description}</p>}
-              {neighborhood.walkabilityScore && (
-                <p>Walkability Score: {neighborhood.walkabilityScore}</p>
-              )}
-              {neighborhood.bikeScore && <p>Bike Score: {neighborhood.bikeScore}</p>}
-              {neighborhood.transitScore && <p>Transit Score: {neighborhood.transitScore}</p>}
-              {neighborhood.schoolRating && <p>School Rating: {neighborhood.schoolRating}</p>}
-              {neighborhood.notes && <p>Notes: {neighborhood.notes}</p>}
-            </div>
-          </li>
-        );
-      })}
+      {city && <NeighborhoodManager cityId={city.id} />}
       {city && <MonthlyWeatherManager cityId={city.id} />}
       {city && <EventManager cityId={city.id} />}
-      {sectionContainer<AgeDemographic>(
-        'Age Demographics',
-        city?.ageDemographics,
-        (ageDemographic) => {
-          return (
-            <li key={ageDemographic.id}>
-              <p>{ageDemographic.ageRange}</p>
-              <p>{ageDemographic.percent.toString()}%</p>
-            </li>
-          );
-        },
-        'row'
-      )}
+      {city && <AgeDemographicsManager cityId={city.id} />}
       {sectionContainer<EthnicDemographic>(
         'EthnicDemographics',
         city?.ethnicDemographics,

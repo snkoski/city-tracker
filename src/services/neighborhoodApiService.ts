@@ -14,7 +14,7 @@ export const fetchAllNeighborhoods = async (): Promise<Neighborhood[]> => {
 };
 
 export const fetchCityNeighborhoods = async (cityId: number): Promise<Neighborhood[]> => {
-  const response = await fetch(`${API_BASE_URL}/neighborhoods?cityId=${cityId}`);
+  const response = await fetch(`${API_BASE_URL}/cities/${cityId}/neighborhoods`);
   if (!response.ok) {
     throw new Error(`In fetchCityNeighborhoods - HTTP error! status: ${response.status}`);
   }

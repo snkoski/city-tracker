@@ -150,7 +150,7 @@ model AgeDemographic {
   id        Int      @id @default(autoincrement())
   cityId    Int      @map("city_id")
   ageRange  String   @map("age_range")
-  percent   Decimal
+  percent   String
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -163,7 +163,7 @@ model EthnicDemographic {
   id        Int      @id @default(autoincrement())
   cityId    Int      @map("city_id")
   group     String // e.g. "Hispanic", "Asian", "Black", "White", etc.
-  percent   Decimal // e.g. 23.4
+  percent   String
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
