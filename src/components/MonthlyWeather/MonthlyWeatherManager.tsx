@@ -11,6 +11,7 @@ export const MonthlyWeatherManager = ({ cityId }: MonthlyWeatherManagerProps) =>
   const [monthlyWeather, setMonthlyWeather] = useState<MonthlyWeather[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [isFormVisible, setIsFormVisible] = useState<boolean>(false);
 
   const LoadMonthlyWeather = useCallback(async () => {
     setIsLoading(true);
