@@ -92,11 +92,11 @@ model MonthlyWeather {
   id              Int      @id @default(autoincrement())
   cityId          Int      @map("city_id")
   month           Int
-  avgHighTempF    Decimal? @map("avg_high_temp_f")
-  avgLowTempF     Decimal? @map("avg_low_temp_f")
-  avgTempF        Decimal? @map("avg_temp_f")
-  avgRainfallInch Decimal? @map("avgrainfall_inch")
-  humiditiy       Decimal?
+  avgHighTempF    String?  @map("avg_high_temp_f")
+  avgLowTempF     String?  @map("avg_low_temp_f")
+  avgTempF        String?  @map("avg_temp_f")
+  avgRainfallInch String?  @map("avgrainfall_inch")
+  humiditiy       String?
   createdAt       DateTime @default(now()) @map("created_at")
   updatedAt       DateTime @updatedAt @map("updated_at")
 

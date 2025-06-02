@@ -8,6 +8,7 @@ import {
   CityFormData,
   EthnicDemographicFormData,
   EventFormData,
+  MonthlyWeatherFormData,
   NeighborhoodFormData,
   ResourceFormData
 } from '../types';
@@ -524,8 +525,105 @@ app.get('/api/cities/:cityId/monthlyWeather', async (req, res) => {
   }
 });
 
-app.listen(3001, () => {
-  console.log('Server running on port 3001');
+app.post('/api/monthlyWeather', async (req, res) => {
+  console.log(`Received monthlyWeather data: ${req.body}`);
+  try {
+    const monthlyWeather = await prisma.monthlyWeather.create({
+      data: {
+        cityId: req.body.cityId,
+        month: req.body.month,
+        avgHighTempF: req.body.avgHighTempF,
+        avgLowTempF: req.body.avgLowTempF,
+        avgTempF: req.body.avgTempF,
+        avgRainfallInch: req.body.avgRainfallInch,
+        humiditiy: req.body.humiditiy
+      }
+    });
+    console.log(`Created monthlyWeather: ${monthlyWeather}`);
+    res.status(201).json(monthlyWeather);
+  } catch (error) {
+    console.error(`Error creating monthlyWeather: ${error}`);
+    res.status(500).json({
+      error: 'Failed to create monthlyWeather',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+app.patch('/api/monthlyWeather/:id', async (req, res) => {
+  const monthlyWeatherId = parseInt(req.params.id, 10);
+  if (isNaN(monthlyWeatherId)) {
+    res.status(400).json({ error: 'Invalid monthlyWeather ID format. ID must be a number.' });
+  }
+
+  const { month, avgHighTempF, avgLowTempF, avgTempF, avgRainfallInch, humiditiy } = req.body;
+  const updateData: Partial<MonthlyWeatherFormData> = {};
+
+  if (month !== undefined) updateData.month = month;
+  if (avgHighTempF !== undefined) updateData.avgHighTempF = avgHighTempF;
+  if (avgLowTempF !== undefined) updateData.avgLowTempF = avgLowTempF;
+  if (avgTempF !== undefined) updateData.avgTempF = avgTempF;
+  if (avgRainfallInch !== undefined) updateData.avgRainfallInch = avgRainfallInch;
+  if (humiditiy !== undefined) updateData.humiditiy = humiditiy;
+
+  if (Object.keys(updateData).length === 0) {
+    res.status(400).json({ error: 'No update data provided.' });
+  }
+  try {
+    const updatedMonthlyWeather = await prisma.monthlyWeather.update({
+      where: {
+        id: monthlyWeatherId
+      },
+      data: updateData
+    });
+    res.status(200).json(updatedMonthlyWeather);
+  } catch (error: unknown) {
+    console.error(`Error updating monthlyWeatherId with ID ${monthlyWeatherId}:`, error);
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === 'P2025') {
+        res.status(404).json({ error: `ethnicDemographic with ID ${monthlyWeatherId} not found.` });
+      }
+
+      if (error.code === 'P2002') {
+        res.status(409).json({
+          error: 'Update failed due to a conflict (e.g., unique field already exists).',
+          details: `The change violates a unique constraint on ${
+            Array.isArray(error.meta?.target)
+              ? (error.meta?.target as string[]).join(', ')
+              : error.meta?.target || 'a field'
+          }.`
+        });
+      }
+      res.status(500).json({
+        error: 'Failed to update monthlyWeather due to a database error.',
+        prismaCode: error.code
+      });
+    } else if (error instanceof Error) {
+      // Handle generic JavaScript errors (these have a .message property)
+      res.status(500).json({ error: 'Failed to update monthlyWeather.', details: error.message });
+    } else {
+      // Handle other types of thrown values (e.g., if a string was thrown)
+      res.status(500).json({ error: 'An unexpected error occurred.' });
+    }
+  }
+});
+
+app.delete('/api/monthlyWeather/:id', async (req, res) => {
+  const monthlyWeatherId = parseInt(req.params.id, 10);
+  if (isNaN(monthlyWeatherId)) {
+    res.status(400).json({ error: 'Invalid monthlyWeather ID format. ID must be a number.' });
+  }
+  try {
+    await prisma.monthlyWeather.delete({
+      where: { id: monthlyWeatherId }
+    });
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({
+      error: 'Failed to delete monthlyWeather',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
 });
 
 // Neighborhoods
@@ -1264,4 +1362,8 @@ app.delete('/api/airports/:id', async (req, res) => {
       details: error instanceof Error ? error.message : 'Unknown error'
     });
   }
+});
+
+app.listen(3001, () => {
+  console.log('Server running on port 3001');
 });
