@@ -1154,8 +1154,8 @@ app.get('/api/cities/:cityId/airports', async (req, res) => {
 });
 
 app.post('/api/airports', async (req, res) => {
+  console.log(`Received airport data: ${req.body}`);
   try {
-    console.log(`Received airport data: ${req.body}`);
     const airport = await prisma.airport.create({
       data: {
         cityId: req.body.cityId,

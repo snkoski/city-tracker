@@ -1,12 +1,13 @@
 import { CityFullDetails } from '../types';
 import { ReactNode } from 'react';
-import { Airport, Place } from '@prisma/client';
+import { Place } from '@prisma/client';
 import { EventManager } from './Events/EventManager';
 import { MonthlyWeatherManager } from './MonthlyWeather/MonthlyWeatherManager';
 import { NeighborhoodManager } from './Neighborhoods/NeighborhoodManager';
 import { AgeDemographicsManager } from './AgeDemographics/AgeDemographicsManager';
 import { EthnicDemographicsManager } from './EthnicDemographics/EthnicDemographicsManager';
 import { AllergenLevelsManager } from './AllergenLevels/AllergenLevelsManager';
+import { AirportsManager } from './Airports/AirportsManager';
 
 type CityDetailsProps = {
   city: CityFullDetails | null;
@@ -83,29 +84,7 @@ export const CityDetails = ({ city }: CityDetailsProps) => {
       {city && <AgeDemographicsManager cityId={city.id} />}
       {city && <EthnicDemographicsManager cityId={city.id} />}
       {city && <AllergenLevelsManager cityId={city.id} />}
-      {sectionContainer<Airport>('Airports', city?.airports, (airport) => {
-        return (
-          <li key={airport.id}>
-            <div>
-              <p>
-                {airport.code}:{' '}
-                <a href={`${airport.website}`} target="_blank" rel="noopener noreferrer">
-                  {airport.name}
-                </a>
-                {airport.isInternational && (
-                  <span className="font-bold text-pink-400">
-                    {' '}
-                    Int(ernational) not an Integer you dummies
-                  </span>
-                )}
-              </p>
-              <p>Distance: {airport.distanceMiles} miles</p>
-              <p>Hopefully takes {airport.travelTimeMinutes} minutes🤷‍♂️</p>
-              <p>{airport.description}</p>
-            </div>
-          </li>
-        );
-      })}
+      {city && <AirportsManager cityId={city.id} />}
       {sectionContainer<Place>('Places', city?.places, (place) => {
         return (
           <li key={place.id}>

@@ -14,7 +14,7 @@ export const fetchAllAirports = async (): Promise<Airport[]> => {
 };
 
 export const fetchCityAirports = async (cityId: number): Promise<Airport[]> => {
-  const response = await fetch(`${API_BASE_URL}/airports?cityId=${cityId}`);
+  const response = await fetch(`${API_BASE_URL}/cities/${cityId}/airports`);
   if (!response.ok) {
     throw new Error(`In fetchCityAirports - HTTP error! status: ${response.status}`);
   }
@@ -32,16 +32,16 @@ export const createAirport = async (AirportData: AirportFormData): Promise<Airpo
     body: JSON.stringify(AirportData)
   });
   if (!response.ok) {
-    let errorData;
+    let errorDetails = response.statusText;
     try {
-      errorData = await response.json();
-    } catch {
-      throw new Error(
-        `In createAirport - HTTP error status: ${response.status}, message: ${
-          errorData?.message || response.statusText
-        }`
-      );
+      const errorData = await response.json();
+      errorDetails = errorData?.message || errorData?.error || response.statusText;
+    } catch (error) {
+      console.error('Could not parse error response JSON:', error);
     }
+    throw new Error(
+      `In createAirport - HTTP error status: ${response.status}, message: ${errorDetails}`
+    );
   }
 
   const data = await response.json();
