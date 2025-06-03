@@ -10,6 +10,7 @@ import {
   EventFormData,
   MonthlyWeatherFormData,
   NeighborhoodFormData,
+  PlaceFormData,
   ResourceFormData
 } from '../types';
 
@@ -1359,6 +1360,151 @@ app.delete('/api/airports/:id', async (req, res) => {
   } catch (error) {
     res.status(500).json({
       error: 'Failed to delete airport',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+// Places
+app.get('/api/places', async (req, res) => {
+  try {
+    const places = await prisma.place.findMany({
+      orderBy: {
+        id: 'asc'
+      }
+    });
+    res.json(places);
+  } catch (error) {
+    console.error(`Error fetching places: ${error}`);
+    res.status(500).json({ error: 'Failed to fetch places from postgres' });
+  }
+});
+
+app.get('/api/cities/:cityId/places', async (req, res) => {
+  const cityId = parseInt(req.params.cityId, 10);
+  try {
+    if (isNaN(cityId)) {
+      res.status(400).json({ error: 'Invalid stateId format' });
+    }
+
+    const cityExists = await prisma.city.findUnique({
+      where: {
+        id: cityId
+      }
+    });
+
+    if (!cityExists) {
+      res.status(404).json({ error: `City with ID ${cityId} does not exist` });
+    }
+
+    const places = await prisma.place.findMany({
+      where: { cityId: cityId },
+      orderBy: { name: 'asc' }
+    });
+
+    res.json(places);
+  } catch (error) {
+    console.error(`Error fetching places for city ID ${cityId}: ${error}`);
+    res.status(500).json({ error: 'Failed to fetch places for the city' });
+  }
+});
+
+app.post('/api/places', async (req, res) => {
+  console.log(`Received place data: ${req.body}`);
+  try {
+    const place = await prisma.place.create({
+      data: {
+        cityId: req.body.cityId,
+        name: req.body.name,
+        website: req.body.website,
+        description: req.body.description,
+        type: req.body.type,
+        neighborhoodId: req.body.neighborhoodId,
+        address: req.body.address
+      }
+    });
+    console.log(`Created place: ${place}`);
+    res.status(201).json(place);
+  } catch (error) {
+    console.error(`Error creating place: ${error}`);
+    res.status(500).json({
+      error: 'Failed to create place',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+app.patch('/api/places/:id', async (req, res) => {
+  const placeId = parseInt(req.params.id, 10);
+  if (isNaN(placeId)) {
+    res.status(400).json({ error: 'Invalid place ID format. ID must be a number.' });
+  }
+
+  const { name, website, description, type, neighborhoodId, address } = req.body;
+  const updateData: Partial<PlaceFormData> = {};
+
+  if (name !== undefined) updateData.name = name;
+  if (type !== undefined) updateData.type = type;
+  if (neighborhoodId !== undefined) updateData.neighborhoodId = neighborhoodId;
+  if (address !== undefined) updateData.address = address;
+  if (website !== undefined) updateData.website = website;
+  if (description !== undefined) updateData.description = description;
+
+  if (Object.keys(updateData).length === 0) {
+    res.status(400).json({ error: 'No update data provided.' });
+  }
+  try {
+    const updatedPlace = await prisma.place.update({
+      where: {
+        id: placeId
+      },
+      data: updateData
+    });
+    res.status(200).json(updatedPlace);
+  } catch (error: unknown) {
+    console.error(`Error updating place with ID ${placeId}:`, error);
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === 'P2025') {
+        res.status(404).json({ error: `place with ID ${placeId} not found.` });
+      }
+
+      if (error.code === 'P2002') {
+        res.status(409).json({
+          error: 'Update failed due to a conflict (e.g., unique field already exists).',
+          details: `The change violates a unique constraint on ${
+            Array.isArray(error.meta?.target)
+              ? (error.meta?.target as string[]).join(', ')
+              : error.meta?.target || 'a field'
+          }.`
+        });
+      }
+      res.status(500).json({
+        error: 'Failed to update place due to a database error.',
+        prismaCode: error.code
+      });
+    } else if (error instanceof Error) {
+      // Handle generic JavaScript errors (these have a .message property)
+      res.status(500).json({ error: 'Failed to update place.', details: error.message });
+    } else {
+      // Handle other types of thrown values (e.g., if a string was thrown)
+      res.status(500).json({ error: 'An unexpected error occurred.' });
+    }
+  }
+});
+
+app.delete('/api/places/:id', async (req, res) => {
+  const placeId = parseInt(req.params.id, 10);
+  if (isNaN(placeId)) {
+    res.status(400).json({ error: 'Invalid place ID format. ID must be a number.' });
+  }
+  try {
+    await prisma.place.delete({
+      where: { id: placeId }
+    });
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({
+      error: 'Failed to delete place',
       details: error instanceof Error ? error.message : 'Unknown error'
     });
   }

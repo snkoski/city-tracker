@@ -34,18 +34,17 @@ export const createMonthlyWeather = async (
     body: JSON.stringify(monthlyWeatherData)
   });
   if (!response.ok) {
-    let errorData;
+    let errorDetails = response.statusText;
     try {
-      errorData = await response.json();
-    } catch {
-      throw new Error(
-        `In createMonthlyWeather - HTTP error status: ${response.status}, message: ${
-          errorData?.message || response.statusText
-        }`
-      );
+      const errorData = await response.json();
+      errorDetails = errorData?.message || errorData?.error || response.statusText;
+    } catch (error) {
+      console.error('Could not parse error response JSON:', error);
     }
+    throw new Error(
+      `In createMonthlyWeather - HTTP error status: ${response.status}, message: ${errorDetails}`
+    );
   }
-  console.log('createMonthlyWeather before response.json()');
 
   const data = await response.json();
   return data as MonthlyWeather;

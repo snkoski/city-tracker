@@ -14,7 +14,7 @@ export const fetchAllPlaces = async (): Promise<Place[]> => {
 };
 
 export const fetchCityPlaces = async (cityId: number): Promise<Place[]> => {
-  const response = await fetch(`${API_BASE_URL}/places?cityId=${cityId}`);
+  const response = await fetch(`${API_BASE_URL}/cities/${cityId}/places`);
   if (!response.ok) {
     throw new Error(`In fetchCityPlaces - HTTP error! status: ${response.status}`);
   }
@@ -24,6 +24,8 @@ export const fetchCityPlaces = async (cityId: number): Promise<Place[]> => {
 };
 
 export const createPlace = async (PlaceData: PlaceFormData): Promise<Place> => {
+  console.log(`createPlace ${JSON.stringify(PlaceData)}`);
+
   const response = await fetch(`${API_BASE_URL}/places`, {
     method: 'POST',
     headers: {
@@ -32,16 +34,16 @@ export const createPlace = async (PlaceData: PlaceFormData): Promise<Place> => {
     body: JSON.stringify(PlaceData)
   });
   if (!response.ok) {
-    let errorData;
+    let errorDetails = response.statusText;
     try {
-      errorData = await response.json();
-    } catch {
-      throw new Error(
-        `In createPlace - HTTP error status: ${response.status}, message: ${
-          errorData?.message || response.statusText
-        }`
-      );
+      const errorData = await response.json();
+      errorDetails = errorData?.message || errorData?.error || response.statusText;
+    } catch (error) {
+      console.error('Could not parse error response JSON:', error);
     }
+    throw new Error(
+      `In createPlace - HTTP error status: ${response.status}, message: ${errorDetails}`
+    );
   }
 
   const data = await response.json();
