@@ -24,6 +24,16 @@ export const NeighborhoodList = ({
             <strong>{neighborhood.name}</strong>
           </p>
           <p>Population: {neighborhood.population ? neighborhood.population : 'n/a'}</p>
+          <p>Area: {neighborhood.area ? neighborhood.area : 'n/a'}</p>
+          <p>Description: {neighborhood.description ? neighborhood.description : 'n/a'}</p>
+          <p>
+            Walkability: {neighborhood.walkabilityScore ? neighborhood.walkabilityScore : 'n/a'}
+          </p>
+          <p>Bikability: {neighborhood.bikeScore ? neighborhood.bikeScore : 'n/a'}</p>
+          <p>Transitscore: {neighborhood.transitScore ? neighborhood.transitScore : 'n/a'}</p>
+          <p>school rating: {neighborhood.schoolRating ? neighborhood.schoolRating : 'n/a'}</p>
+          <p>notes: {neighborhood.notes ? neighborhood.notes : 'n/a'}</p>
+
           <div>
             <button type="button" onClick={() => onEdit(neighborhood)}>
               Edit
