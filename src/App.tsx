@@ -178,7 +178,7 @@ export const App = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-screen min-w-screen items-center">
+    <div className="flex flex-col min-h-screen min-w-fit items-center m-4">
       <Header
         onShowResources={handleShowResources}
         onShowStates={handleBackToStates}
