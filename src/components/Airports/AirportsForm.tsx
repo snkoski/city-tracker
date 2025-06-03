@@ -52,7 +52,7 @@ export const AirportsForm = ({
 
   const handleSubmit = async (event: FormEvent) => {
     console.log('airport form handle submit start');
-    if (!name || !code || isInternational == null) {
+    if (!name || !code) {
       alert('Do some actual research before trying to add some data!');
       return;
     }
@@ -62,7 +62,7 @@ export const AirportsForm = ({
 
       name: name,
       code: code,
-      isInternational: isInternational,
+      isInternational: isInternational || false,
       travelTimeMinutes: travelTimeMinutes,
       distanceMiles: distanceMiles,
       transitOptions: transitOptions,
