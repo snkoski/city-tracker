@@ -16,6 +16,7 @@ enum PlaceType {
   COWORKING
   AIRPORT
   PAPA_MURPHYS
+  NOT_CATAGORIZED
 }
 
 model State {
@@ -23,6 +24,7 @@ model State {
   name          String   @unique
   incomeTaxRate Decimal? @map("income_tax_rate")
   population    Int?
+  myRanking     Int?     @map("my_ranking")
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")
 
@@ -217,7 +219,7 @@ model AllergenLevel {
   city City @relation(fields: [cityId], references: [id])
 
   @@unique([cityId, month])
-  @@map("alergen_levels")
+  @@map("allergen_levels")
 }
 
 // model DailySunriseSunset {
