@@ -8,6 +8,7 @@ import { AgeDemographicsManager } from './AgeDemographics/AgeDemographicsManager
 import { EthnicDemographicsManager } from './EthnicDemographics/EthnicDemographicsManager';
 import { AllergenLevelsManager } from './AllergenLevels/AllergenLevelsManager';
 import { AirportsManager } from './Airports/AirportsManager';
+import { PlacesManager } from './Places/PlacesManager';
 
 type CityDetailsProps = {
   city: CityFullDetails | null;
@@ -85,21 +86,7 @@ export const CityDetails = ({ city }: CityDetailsProps) => {
       {city && <EthnicDemographicsManager cityId={city.id} />}
       {city && <AllergenLevelsManager cityId={city.id} />}
       {city && <AirportsManager cityId={city.id} />}
-      {sectionContainer<Place>('Places', city?.places, (place) => {
-        return (
-          <li key={place.id}>
-            <div>
-              <p>
-                <a href={`${place.website}`} target="_blank" rel="noopener noreferrer">
-                  {place.name}
-                </a>{' '}
-                - {place.type}
-              </p>
-              <p>{place.description}</p>
-            </div>
-          </li>
-        );
-      })}
+      {city && <PlacesManager cityId={city.id} />}
     </div>
   );
 };
