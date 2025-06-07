@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { City, State } from '@prisma/client';
-import '../App.css';
 
 interface CityListProps {
   onCitySelect: (city: City & { state: State }) => void;
