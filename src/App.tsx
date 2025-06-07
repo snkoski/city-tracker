@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import StateContainer from './components/StateContainer';
 import { StateDetails } from './components/StateDetails';
 
-import './App.css';
 import { CitySummary } from './components/CitySummary';
 import { Footer } from './components/Footer';
 import { Header } from './components/Header';
@@ -11,6 +10,7 @@ import { City, State } from '@prisma/client';
 import { CityFullDetails } from './types';
 import { fetchCities, fetchFullCityDetails, fetchStates } from './services/apiService';
 import { ResourceManager } from './components/Resources/ResourceManager';
+import { CitySummaryManager } from './components/Cities/CitySummary/CitySummaryManager';
 
 export const App = () => {
   const [currentView, setCurrentView] = useState<
@@ -77,8 +77,6 @@ export const App = () => {
     setError(null);
     try {
       const data = await fetchFullCityDetails(city.id);
-      console.log('ANY EVENTS', data);
-
       setSelectedCity(data);
     } catch (e) {
       if (e instanceof Error) {
@@ -130,17 +128,16 @@ export const App = () => {
         if (loadingCities) return <p>Loading cities...</p>;
         return (
           <div>
-            <div className="flex flex-row gap-2">
-              {cities.map((city) => (
-                <StateContainer key={city.id}>
-                  <CitySummary
-                    city={city}
-                    state={states.find((state) => state.id === selectedState?.id)?.name ?? 'N/A'}
-                    onSelectCity={() => handleSelectCity(city)}
-                  />
-                </StateContainer>
-              ))}
+            <div>
+              <button type="button" onClick={() => console.log('newCity')}>
+                Add New City
+              </button>
             </div>
+            <CitySummaryManager
+              cities={cities}
+              state={selectedState}
+              handleSelectCity={handleSelectCity}
+            />
             <button type="button" onClick={handleBackToStates}>
               Back to states
             </button>
