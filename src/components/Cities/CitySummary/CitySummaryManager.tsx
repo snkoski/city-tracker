@@ -1,29 +1,64 @@
 import { City, State } from '@prisma/client';
-import StateContainer from '../../StateContainer';
-import { CitySummary } from '../../CitySummary';
+import { CitySummaryList } from './CitySummaryList';
+import { useState } from 'react';
+import { CitySummaryForm } from './CitySummaryForm';
+import { CitySummaryFormData } from '../../../types';
+import { createCity } from '../../../services/CityApiService';
 
 type CitySummaryManagerProps = {
   cities: City[];
-  state: State | null;
-  handleSelectCity: (city: City) => void;
+  state: State;
+  onSelectCity: (city: City) => void;
 };
 
-export const CitySummaryManager = ({
-  cities,
-  state,
-  handleSelectCity
-}: CitySummaryManagerProps) => {
+export const CitySummaryManager = ({ cities, state, onSelectCity }: CitySummaryManagerProps) => {
+  const [stateCities, setStateCities] = useState<City[]>(cities);
+  const [isFormVisible, setIsFormVisible] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // TODO: move fetching cities into this component
+
+  const handleSubmit = async (data: CitySummaryFormData) => {
+    setError(null);
+    try {
+      const created = await createCity(data);
+      setStateCities((prevCities) => {
+        return [...prevCities, created];
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError(`An unknown error occurred while creating the city. Oh no...`);
+      }
+    }
+    setIsLoading(false);
+  };
+
+  const handleCancelClick = () => {
+    setIsFormVisible(false);
+  };
+
+  if (isLoading && !stateCities.length) return <p>Loading Cities...</p>;
+
   return (
-    <div className="flex flex-row gap-2">
-      {cities.map((city) => (
-        <StateContainer key={city.id}>
-          <CitySummary
-            city={city}
-            state={state?.name ?? 'Where the fuck is this place'}
-            onSelectCity={() => handleSelectCity(city)}
-          />
-        </StateContainer>
-      ))}
+    <div>
+      {error && <p>Error: {error}</p>}
+      {!isFormVisible && (
+        <button type="button" onClick={() => setIsFormVisible(true)}>
+          Add New City
+        </button>
+      )}
+      {isFormVisible && (
+        <CitySummaryForm
+          onCancel={handleCancelClick}
+          onSubmit={handleSubmit}
+          isLoading={isLoading}
+          stateId={state.id}
+        />
+      )}
+      <CitySummaryList cities={stateCities} state={state} handleSelectCity={onSelectCity} />
     </div>
   );
 };

@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import StateContainer from './components/StateContainer';
 import { StateDetails } from './components/StateDetails';
 
-import { CitySummary } from './components/CitySummary';
 import { Footer } from './components/Footer';
 import { Header } from './components/Header';
 import { CityDetails } from './components/CityDetails';
@@ -126,17 +125,13 @@ export const App = () => {
 
       case 'citiesList':
         if (loadingCities) return <p>Loading cities...</p>;
+        if (!selectedState) return <p>something has gone wrong with the state you selected</p>;
         return (
           <div>
-            <div>
-              <button type="button" onClick={() => console.log('newCity')}>
-                Add New City
-              </button>
-            </div>
             <CitySummaryManager
               cities={cities}
               state={selectedState}
-              handleSelectCity={handleSelectCity}
+              onSelectCity={handleSelectCity}
             />
             <button type="button" onClick={handleBackToStates}>
               Back to states

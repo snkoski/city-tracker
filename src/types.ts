@@ -55,3 +55,5 @@ export type EthnicDemographicFormData = Omit<EthnicDemographic, 'id' | 'createdA
 export type AirportFormData = Omit<Airport, 'id' | 'createdAt' | 'updatedAt'>;
 
 export type AllergenLevelFormData = Omit<AllergenLevel, 'id' | 'createdAt' | 'updatedAt'>;
+
+export type CitySummaryFormData = Pick<City, 'name' | 'population' | 'salesTaxRate'>;

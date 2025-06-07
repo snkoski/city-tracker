@@ -1,5 +1,4 @@
-import { Neighborhood } from '@prisma/client';
-import { CityFormData, CityFullDetails } from '../types';
+import { CityFormData, CityFullDetails, CitySummaryFormData } from '../types';
 
 const API_BASE_URL = 'http://localhost:3001/api';
 
@@ -24,7 +23,9 @@ export const fetchStateCities = async (stateId: number): Promise<CityFullDetails
 };
 
 // TODO: How should adding a new city be handled? All data or just pop/tax and use update for rest of data?
-export const createCity = async (cityData: CityFormData): Promise<CityFullDetails> => {
+export const createCity = async (cityData: CitySummaryFormData): Promise<CityFullDetails> => {
+  console.log('createCity');
+
   const response = await fetch(`${API_BASE_URL}/cities`, {
     method: 'POST',
     headers: {
@@ -33,16 +34,16 @@ export const createCity = async (cityData: CityFormData): Promise<CityFullDetail
     body: JSON.stringify(cityData)
   });
   if (!response.ok) {
-    let errorData;
+    let errorDetails = response.statusText;
     try {
-      errorData = await response.json();
-    } catch {
-      throw new Error(
-        `In createCity - HTTP error status: ${response.status}, message: ${
-          errorData?.message || response.statusText
-        }`
-      );
+      const errorData = await response.json();
+      errorDetails = errorData?.message || errorData?.error || response.statusText;
+    } catch (error) {
+      console.error('Could not parse error response JSON:', error);
     }
+    throw new Error(
+      `In createCity - HTTP error status: ${response.status}, message: ${errorDetails}`
+    );
   }
 
   const data = await response.json();

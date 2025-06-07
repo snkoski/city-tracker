@@ -116,6 +116,8 @@ app.get(`/api/cities/:cityId`, async (req, res) => {
 });
 
 app.post('/api/cities', async (req, res) => {
+  console.log('test');
+
   try {
     console.log('Received city data:', req.body);
     const city = await prisma.city.create({
@@ -123,7 +125,7 @@ app.post('/api/cities', async (req, res) => {
         name: req.body.name,
         stateId: req.body.stateId,
         population: req.body.population ? parseInt(req.body.population) : null,
-        salesTaxRate: req.body.salesTaxRate ? parseFloat(req.body.salesTaxRate) : null
+        salesTaxRate: req.body.salesTaxRate ? req.body.salesTaxRate : null
       }
     });
     console.log('Created city:', city);

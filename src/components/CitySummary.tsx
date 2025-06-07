@@ -13,7 +13,7 @@ export const CitySummary = ({ city, state, onSelectCity }: CitySummaryProps) => 
         {city.name}, {state}
       </p>
       <p>Population: {city.population ?? 'N/A'}</p>
-      <p>Tax Rate: {city.salesTaxRate?.toString() ?? 'N/A'}</p>
+      <p>Tax Rate: {city.salesTaxRate ?? 'N/A'}</p>
       <button type="button" onClick={() => onSelectCity(city.id)}>
         Full details
       </button>
