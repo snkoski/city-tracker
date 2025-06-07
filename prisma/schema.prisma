@@ -22,7 +22,7 @@ enum PlaceType {
 model State {
   id            Int      @id @default(autoincrement())
   name          String   @unique
-  incomeTaxRate Decimal? @map("income_tax_rate")
+  incomeTaxRate String?  @map("income_tax_rate")
   population    Int?
   myRanking     Int?     @map("my_ranking")
   createdAt     DateTime @default(now()) @map("created_at")
@@ -38,11 +38,11 @@ model City {
   name                  String
   stateId               Int      @map("state_id")
   population            Int?
-  salesTaxRate          Decimal? @map("sales_tax_rate")
+  salesTaxRate          String?  @map("sales_tax_rate")
   subreddit             String?
   naturalDisasters      String?  @map("natural_disasters")
-  violentCrimeRate      Decimal? @map("violent_crime_rate")
-  propertyCrimeRate     Decimal? @map("property_crime_rate")
+  violentCrimeRate      String?  @map("violent_crime_rate")
+  propertyCrimeRate     String?  @map("property_crime_rate")
   lifeExpectancy        Int?     @map("life_expectancy")
   medianIncome          Int?     @map("median_income")
   medianHouseholdIncome Int?     @map("median_household_income")
