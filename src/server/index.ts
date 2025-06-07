@@ -1510,6 +1510,13 @@ app.delete('/api/places/:id', async (req, res) => {
   }
 });
 
-app.listen(3001, () => {
-  console.log('Server running on port 3001');
+app.get('/ping', (req, res) => {
+  console.log('✅ /ping endpoint was hit!');
+  res.status(200).send('Pong!');
+});
+
+const PORT = 3001;
+
+app.listen(PORT, () => {
+  console.log(`✅ Backend server is running and listening on http://localhost:${PORT}`);
 });
