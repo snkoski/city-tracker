@@ -14,7 +14,7 @@ export const fetchAllAllergenLevels = async (): Promise<AllergenLevel[]> => {
 };
 
 export const fetchCityAllergenLevels = async (cityId: number): Promise<AllergenLevel[]> => {
-  const response = await fetch(`${API_BASE_URL}/allergenLevels?cityId=${cityId}`);
+  const response = await fetch(`${API_BASE_URL}/cities/${cityId}/allergenLevels`);
   if (!response.ok) {
     throw new Error(`In fetchCityAllergenLevels - HTTP error! status: ${response.status}`);
   }
