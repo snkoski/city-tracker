@@ -1,6 +1,8 @@
 import { AllergenLevel } from '@prisma/client';
 import { AllergenLevelFormData } from '../../types';
 import { FormEvent, useEffect, useState } from 'react';
+import { MonthSelect } from '../Inputs/MonthSelect';
+import { NumberSelect } from '../Inputs/NumberSelect';
 
 type AllergenLevelsFormProps = {
   onSubmit: (data: AllergenLevelFormData, id?: number) => Promise<void>;
@@ -17,33 +19,33 @@ export const AllergenLevelsForm = ({
   isLoading,
   cityId
 }: AllergenLevelsFormProps) => {
-  const [month, setMonth] = useState<number | null>(null);
-  const [pollen, setPollen] = useState<number | null>(null);
-  const [dust, setDust] = useState<number | null>(null);
-  const [mold, setMold] = useState<number | null>(null);
-  const [ragweed, setRagweed] = useState<number | null>(null);
-  const [grass, setGrass] = useState<number | null>(null);
-  const [trees, setTrees] = useState<number | null>(null);
+  const [month, setMonth] = useState<number | ''>('');
+  const [pollen, setPollen] = useState<number | ''>('');
+  const [dust, setDust] = useState<number | ''>('');
+  const [mold, setMold] = useState<number | ''>('');
+  const [ragweed, setRagweed] = useState<number | ''>('');
+  const [grass, setGrass] = useState<number | ''>('');
+  const [trees, setTrees] = useState<number | ''>('');
 
   const isEditMode = Boolean(initialData);
 
   useEffect(() => {
     if (initialData) {
-      setMonth(initialData.month || null);
-      setPollen(initialData.pollen || null);
-      setDust(initialData.dust || null);
-      setMold(initialData.mold || null);
-      setRagweed(initialData.ragweed || null);
-      setGrass(initialData.grass || null);
-      setTrees(initialData.trees || null);
+      setMonth(initialData.month || '');
+      setPollen(initialData.pollen || '');
+      setDust(initialData.dust || '');
+      setMold(initialData.mold || '');
+      setRagweed(initialData.ragweed || '');
+      setGrass(initialData.grass || '');
+      setTrees(initialData.trees || '');
     } else {
-      setMonth(null);
-      setPollen(null);
-      setDust(null);
-      setMold(null);
-      setRagweed(null);
-      setGrass(null);
-      setTrees(null);
+      setMonth('');
+      setPollen('');
+      setDust('');
+      setMold('');
+      setRagweed('');
+      setGrass('');
+      setTrees('');
     }
   }, [initialData, cityId]);
 
@@ -57,12 +59,12 @@ export const AllergenLevelsForm = ({
     const formData: AllergenLevelFormData = {
       cityId,
       month: month,
-      pollen: pollen,
-      dust: dust,
-      mold: mold,
-      ragweed: ragweed,
-      grass: grass,
-      trees: trees
+      pollen: pollen === '' ? null : pollen,
+      dust: dust === '' ? null : dust,
+      mold: mold === '' ? null : mold,
+      ragweed: ragweed === '' ? null : ragweed,
+      grass: grass === '' ? null : grass,
+      trees: trees === '' ? null : trees
     };
     console.log('allergen level form after form data creation', formData);
 
@@ -74,79 +76,78 @@ export const AllergenLevelsForm = ({
       <h3>{isEditMode ? 'Edit Allergen Level' : 'New Allergen Level'}</h3>
       <div>
         <label htmlFor="month">Month</label>
-        <input
-          type="text"
+        <MonthSelect
           name="month"
           id="month"
+          value={month}
+          onChange={(newMonth) => setMonth(newMonth)}
           disabled={isLoading}
-          value={Number(month)}
-          onChange={(e) => setMonth(Number(e.target.value))}
         />
       </div>
       <div>
         <label htmlFor="pollen">Pollen</label>
-        <input
-          type="number"
+        <NumberSelect
           name="pollen"
           id="pollen"
+          value={pollen}
+          onChange={(newValue) => setPollen(newValue)}
+          placeholder="-- Pollen Level --"
           disabled={isLoading}
-          value={pollen || 0}
-          onChange={(e) => setPollen(Number(e.target.value))}
         />
       </div>
       <div>
         <label htmlFor="dust">Dust</label>
-        <input
-          type="number"
+        <NumberSelect
           name="dust"
           id="dust"
+          value={dust}
+          onChange={(newValue) => setDust(newValue)}
+          placeholder="-- Dust Level --"
           disabled={isLoading}
-          value={dust || 0}
-          onChange={(e) => setDust(Number(e.target.value))}
         />
       </div>
       <div>
         <label htmlFor="mold">Mold</label>
-        <input
-          type="number"
+        <NumberSelect
           name="mold"
           id="mold"
+          value={mold}
+          onChange={(newValue) => setMold(newValue)}
+          placeholder="-- Mold Level --"
           disabled={isLoading}
-          value={mold || 0}
-          onChange={(e) => setMold(Number(e.target.value))}
         />
       </div>
       <div>
         <label htmlFor="ragweed">Ragweed</label>
-        <input
-          type="number"
+        <NumberSelect
           name="ragweed"
           id="ragweed"
+          value={ragweed}
+          onChange={(newValue) => setRagweed(newValue)}
+          placeholder="-- Ragweed Level --"
           disabled={isLoading}
-          value={ragweed || 0}
-          onChange={(e) => setRagweed(Number(e.target.value))}
         />
       </div>
       <div>
         <label htmlFor="grass">Grass</label>
-        <input
-          type="number"
+        <NumberSelect
           name="grass"
           id="grass"
+          value={grass}
+          onChange={(newValue) => setGrass(newValue)}
+          placeholder="-- Grass Level --"
           disabled={isLoading}
-          value={grass || 0}
-          onChange={(e) => setGrass(Number(e.target.value))}
         />
       </div>
       <div>
         <label htmlFor="trees">Trees</label>
-        <input
-          type="number"
+        <NumberSelect
           name="trees"
           id="trees"
+          value={trees}
+          onChange={(newValue) => setTrees(newValue)}
+          placeholder="-- Trees Level --"
           disabled={isLoading}
-          value={trees || 0}
-          onChange={(e) => setTrees(Number(e.target.value))}
         />
       </div>
       <div>
