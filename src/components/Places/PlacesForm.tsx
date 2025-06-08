@@ -1,6 +1,7 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { PlaceFormData } from '../../types';
-import { Place, PlaceType } from '@prisma/client';
+import { Neighborhood, Place, PlaceType } from '@prisma/client';
+import { SelectInput } from '../Inputs/SelectInput';
 
 type PlacesFormProps = {
   onSubmit: (data: PlaceFormData, id?: number) => Promise<void>;
@@ -8,6 +9,7 @@ type PlacesFormProps = {
   initialData?: Place | null;
   isLoading: boolean;
   cityId: number;
+  neighborhoods: Neighborhood[];
 };
 
 export const PlacesForm = ({
@@ -15,7 +17,8 @@ export const PlacesForm = ({
   onCancel,
   initialData,
   isLoading,
-  cityId
+  cityId,
+  neighborhoods
 }: PlacesFormProps) => {
   const [name, setName] = useState<string>('');
   const [website, setWebsite] = useState<string | null>(null);
@@ -43,6 +46,23 @@ export const PlacesForm = ({
       setAddress('');
     }
   }, [initialData, cityId]);
+
+  useEffect(() => {
+    console.log('******', neighborhoods);
+  }, [neighborhoods]);
+
+  const neighborhoodOptions = () => {
+    const options = neighborhoods.map((neighborhood) => ({
+      value: neighborhood.id,
+      label: neighborhood.name
+    }));
+    return options;
+  };
+
+  const nOs = neighborhoods.map((neighborhood) => ({
+    value: neighborhood.id,
+    label: neighborhood.name
+  }));
 
   const handleSubmit = async (event: FormEvent) => {
     console.log('place form handle submit start');
@@ -106,13 +126,34 @@ export const PlacesForm = ({
       </div>
       <div>
         <label htmlFor="neighborhoodId">neighborhoodId</label>
-        <input
+        <SelectInput
+          name="neighborhoodId"
+          id="neighborhoodId"
+          value={neighborhoodId || ''}
+          onChange={(newNeighborhoodId) => setNeighborhoodId(newNeighborhoodId)}
+          placeholder="-- Neighborhood --"
+          disabled={isLoading}
+          options={neighborhoodOptions()}
+        />
+        {/* <input
           type="number"
           name="neighborhoodId"
           id="neighborhoodId"
           disabled={isLoading}
           value={neighborhoodId || ''}
           onChange={(e) => setNeighborhoodId(Number(e.target.value))}
+        /> */}
+      </div>
+      <div>
+        <label htmlFor="neighborhoodId2">neighborhoodId</label>
+        <SelectInput
+          name="neighborhoodId2"
+          id="neighborhoodId2"
+          value={neighborhoodId || ''}
+          onChange={(newNeighborhoodId) => setNeighborhoodId(newNeighborhoodId)}
+          placeholder="-- Neighborhood --"
+          disabled={isLoading}
+          options={nOs}
         />
       </div>
       <div>

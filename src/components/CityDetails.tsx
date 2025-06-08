@@ -14,6 +14,8 @@ type CityDetailsProps = {
 };
 
 export const CityDetails = ({ city }: CityDetailsProps) => {
+  console.log('CITYDETAILS - city', city);
+
   return (
     <div>
       {city && <CityManager city={city} />}
@@ -24,7 +26,7 @@ export const CityDetails = ({ city }: CityDetailsProps) => {
       {city && <EthnicDemographicsManager cityId={city.id} />}
       {city && <AllergenLevelsManager cityId={city.id} />}
       {city && <AirportsManager cityId={city.id} />}
-      {city && <PlacesManager cityId={city.id} />}
+      {city && <PlacesManager cityId={city.id} neighborhoods={city.neighborhoods} />}
     </div>
   );
 };

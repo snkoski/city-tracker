@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { PlacesForm } from './PlacesForm';
 import { PlacesList } from './PlacesList';
-import { Place } from '@prisma/client';
+import { Neighborhood, Place } from '@prisma/client';
 import {
   createPlace,
   deletePlace,
@@ -12,9 +12,10 @@ import { PlaceFormData } from '../../types';
 
 type PlacesManagerProps = {
   cityId: number;
+  neighborhoods: Neighborhood[];
 };
 
-export const PlacesManager = ({ cityId }: PlacesManagerProps) => {
+export const PlacesManager = ({ cityId, neighborhoods }: PlacesManagerProps) => {
   const [places, setPlaces] = useState<Place[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -130,6 +131,7 @@ export const PlacesManager = ({ cityId }: PlacesManagerProps) => {
           isLoading={isFormSubmitting}
           initialData={editingPlace}
           cityId={cityId}
+          neighborhoods={neighborhoods}
         />
       )}
       <PlacesList
