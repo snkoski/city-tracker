@@ -1,6 +1,7 @@
 import { MonthlyWeather } from '@prisma/client';
 import { MonthlyWeatherFormData } from '../../types';
 import { FormEvent, useEffect, useState } from 'react';
+import { MonthSelect } from '../Inputs/MonthSelect';
 
 type MonthlyWeatherFormProps = {
   onSubmit: (data: MonthlyWeatherFormData, id?: number) => Promise<void>;
@@ -17,7 +18,7 @@ export const MonthlyWeatherForm = ({
   isLoading,
   cityId
 }: MonthlyWeatherFormProps) => {
-  const [month, setMonth] = useState<number>();
+  const [month, setMonth] = useState<number | ''>('');
   const [avgHighTempF, setAvgHighTempF] = useState<string | null>('');
   const [avgLowTempF, setAvgLowTempF] = useState<string | null>('');
   const [avgTempF, setAvgTempF] = useState<string | null>('');
@@ -35,7 +36,7 @@ export const MonthlyWeatherForm = ({
       setAvgRainfallInch(initialData.avgRainfallInch || '');
       setHumiditiy(initialData.humiditiy || '');
     } else {
-      setMonth(0);
+      setMonth('');
       setAvgHighTempF(null);
       setAvgLowTempF(null);
       setAvgTempF(null);
@@ -69,14 +70,12 @@ export const MonthlyWeatherForm = ({
     <form onSubmit={handleSubmit}>
       <h3>{isEditMode ? 'Edit Airport' : 'New Airport'}</h3>
       <div>
-        <label htmlFor="month">Mo</label>
-        <input
-          type="number"
+        <label htmlFor="month">Month</label>
+        <MonthSelect
           name="month"
           id="month"
-          disabled={isLoading}
           value={month}
-          onChange={(e) => setMonth(Number(e.target.value))}
+          onChange={(newMonth) => setMonth(newMonth)}
         />
       </div>
       <div>
