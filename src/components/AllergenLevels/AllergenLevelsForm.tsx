@@ -3,6 +3,8 @@ import { AllergenLevelFormData } from '../../types';
 import { FormEvent, useEffect, useState } from 'react';
 import { MonthSelect } from '../Inputs/MonthSelect';
 import { NumberSelect } from '../Inputs/NumberSelect';
+import { SelectInput } from '../Inputs/SelectInput';
+import { numbers } from '../Inputs/selectOptions';
 
 type AllergenLevelsFormProps = {
   onSubmit: (data: AllergenLevelFormData, id?: number) => Promise<void>;
@@ -86,13 +88,14 @@ export const AllergenLevelsForm = ({
       </div>
       <div>
         <label htmlFor="pollen">Pollen</label>
-        <NumberSelect
+        <SelectInput
           name="pollen"
           id="pollen"
           value={pollen}
           onChange={(newValue) => setPollen(newValue)}
           placeholder="-- Pollen Level --"
           disabled={isLoading}
+          options={numbers}
         />
       </div>
       <div>
