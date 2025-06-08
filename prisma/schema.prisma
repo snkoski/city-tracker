@@ -133,7 +133,7 @@ model Event {
   cityId    Int?      @map("city_id")
   placeId   Int?      @map("place_id")
   name      String
-  date      DateTime
+  date      DateTime?
   startTime DateTime? @map("start_time")
   endTime   DateTime? @map("end_time")
   details   String?

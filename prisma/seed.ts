@@ -4,23 +4,23 @@ import { PrismaClient, PlaceType } from '@prisma/client';
 const prisma = new PrismaClient();
 
 const states = [
-  { name: 'California', incomeTaxRate: 9.3, population: 39172742 },
-  { name: 'Colorado', incomeTaxRate: 4.4, population: 5910000 },
-  { name: 'Florida', incomeTaxRate: 0, population: 22300000 },
-  { name: 'Georgia', incomeTaxRate: 5.75, population: 11000000 },
-  { name: 'Idaho', incomeTaxRate: 5.8, population: 2000000 },
-  { name: 'Maryland', incomeTaxRate: 7.0, population: 6200000 }, // includes local avg
-  { name: 'Massachusetts', incomeTaxRate: 5.0, population: 7000000 },
-  { name: 'Minnesota', incomeTaxRate: 7.05, population: 5800000 },
-  { name: 'Montana', incomeTaxRate: 6.75, population: 1100000 },
-  { name: 'North Carolina', incomeTaxRate: 4.75, population: 10600000 },
-  { name: 'Nevada', incomeTaxRate: 0, population: 3300000 },
-  { name: 'Oregon', incomeTaxRate: 9.0, population: 4300000 },
-  { name: 'South Carolina', incomeTaxRate: 6.5, population: 5400000 },
-  { name: 'Tennessee', incomeTaxRate: 0, population: 7200000 },
-  { name: 'Texas', incomeTaxRate: 0, population: 30200000 },
-  { name: 'Virginia', incomeTaxRate: 5.75, population: 8900000 },
-  { name: 'Washington', incomeTaxRate: 0, population: 7900000 }
+  { name: 'California', incomeTaxRate: ' 9.3', population: 39172742 },
+  { name: 'Colorado', incomeTaxRate: ' 4.4', population: 5910000 },
+  { name: 'Florida', incomeTaxRate: '0', population: 22300000 },
+  { name: 'Georgia', incomeTaxRate: ' 5.75', population: 11000000 },
+  { name: 'Idaho', incomeTaxRate: ' 5.8', population: 2000000 },
+  { name: 'Maryland', incomeTaxRate: ' 7.0', population: 6200000 }, // includes local avg
+  { name: 'Massachusetts', incomeTaxRate: ' 5.0', population: 7000000 },
+  { name: 'Minnesota', incomeTaxRate: ' 7.05', population: 5800000 },
+  { name: 'Montana', incomeTaxRate: ' 6.75', population: 1100000 },
+  { name: 'North Carolina', incomeTaxRate: ' 4.75', population: 10600000 },
+  { name: 'Nevada', incomeTaxRate: '0', population: 3300000 },
+  { name: 'Oregon', incomeTaxRate: ' 9.0', population: 4300000 },
+  { name: 'South Carolina', incomeTaxRate: ' 6.5', population: 5400000 },
+  { name: 'Tennessee', incomeTaxRate: '0', population: 7200000 },
+  { name: 'Texas', incomeTaxRate: '0', population: 30200000 },
+  { name: 'Virginia', incomeTaxRate: ' 5.75', population: 8900000 },
+  { name: 'Washington', incomeTaxRate: '0', population: 7900000 }
 ];
 
 const cities = [
@@ -29,11 +29,11 @@ const cities = [
     name: 'Los Angeles',
     stateId: 1,
     population: 3800000,
-    salesTaxRate: 0.095,
+    salesTaxRate: '0.095',
     subreddit: 'r/LosAngeles',
     naturalDisasters: 'Earthquakes, Wildfires',
-    violentCrimeRate: 7.5,
-    propertyCrimeRate: 25.1,
+    violentCrimeRate: '7.5',
+    propertyCrimeRate: '25.1',
     lifeExpectancy: 81,
     medianIncome: 70370,
     medianHouseholdIncome: 78000,
@@ -47,11 +47,11 @@ const cities = [
     name: 'San Francisco',
     stateId: 1,
     population: 870000,
-    salesTaxRate: 0.08625,
+    salesTaxRate: '0.08625',
     subreddit: 'r/sanfrancisco',
     naturalDisasters: 'Earthquakes, Fog',
-    violentCrimeRate: 6.9,
-    propertyCrimeRate: 45,
+    violentCrimeRate: '6.9',
+    propertyCrimeRate: '45',
     lifeExpectancy: 83,
     medianIncome: 120000,
     medianHouseholdIncome: 135000,
@@ -66,11 +66,11 @@ const cities = [
     name: 'Minneapolis',
     stateId: 8,
     population: 425115,
-    salesTaxRate: 0.0903,
+    salesTaxRate: '0.0903',
     subreddit: 'r/minneapolis',
     naturalDisasters: 'Flooding, Severe Storms, Winter Storms',
-    violentCrimeRate: 11.32,
-    propertyCrimeRate: 52.53,
+    violentCrimeRate: '11.32',
+    propertyCrimeRate: '52.53',
     lifeExpectancy: 78.8,
     medianIncome: 44716,
     medianHouseholdIncome: 80269,
@@ -135,121 +135,121 @@ const monthlyWeather = [
     id: 1,
     cityId: 1,
     month: 1,
-    avgHighTempF: 84,
-    avgLowTempF: 66,
-    avgTempF: 75,
-    avgRainfallInch: 0.01,
-    humiditiy: 0.65
+    avgHighTempF: '84',
+    avgLowTempF: '66',
+    avgTempF: '75',
+    avgRainfallInch: '0.01',
+    humiditiy: '0.65'
   },
   {
     id: 2,
     cityId: 1,
     month: 2,
-    avgHighTempF: 68,
-    avgLowTempF: 48,
-    avgTempF: 58,
-    avgRainfallInch: 3.1,
-    humiditiy: 0.6
+    avgHighTempF: '68',
+    avgLowTempF: '48',
+    avgTempF: '58',
+    avgRainfallInch: '3.1',
+    humiditiy: '0.6'
   },
   {
     id: 3,
     cityId: 1,
     month: 3,
-    avgHighTempF: 85,
-    avgLowTempF: 69,
-    avgTempF: 77,
-    avgRainfallInch: 4.6,
-    humiditiy: 0.7
+    avgHighTempF: '85',
+    avgLowTempF: '69',
+    avgTempF: '77',
+    avgRainfallInch: '4.6',
+    humiditiy: '0.7'
   },
   {
     id: 4,
     cityId: 1,
     month: 4,
-    avgHighTempF: 39,
-    avgLowTempF: 26,
-    avgTempF: 32.5,
-    avgRainfallInch: 3.6,
-    humiditiy: 0.62
+    avgHighTempF: '39',
+    avgLowTempF: '26',
+    avgTempF: '32.5',
+    avgRainfallInch: '3.6',
+    humiditiy: '0.62'
   },
   {
     id: 5,
     cityId: 1,
     month: 5,
-    avgHighTempF: 84,
-    avgLowTempF: 66,
-    avgTempF: 75,
-    avgRainfallInch: 0.01,
-    humiditiy: 0.65
+    avgHighTempF: '84',
+    avgLowTempF: '66',
+    avgTempF: '75',
+    avgRainfallInch: '0.01',
+    humiditiy: '0.65'
   },
   {
     id: 6,
     cityId: 1,
     month: 6,
-    avgHighTempF: 68,
-    avgLowTempF: 48,
-    avgTempF: 58,
-    avgRainfallInch: 3.1,
-    humiditiy: 0.6
+    avgHighTempF: '68',
+    avgLowTempF: '48',
+    avgTempF: '58',
+    avgRainfallInch: '3.1',
+    humiditiy: '0.6'
   },
   {
     id: 7,
     cityId: 1,
     month: 7,
-    avgHighTempF: 85,
-    avgLowTempF: 69,
-    avgTempF: 77,
-    avgRainfallInch: 4.6,
-    humiditiy: 0.7
+    avgHighTempF: '85',
+    avgLowTempF: '69',
+    avgTempF: '77',
+    avgRainfallInch: '4.6',
+    humiditiy: '0.7'
   },
   {
     id: 8,
     cityId: 1,
     month: 8,
-    avgHighTempF: 39,
-    avgLowTempF: 26,
-    avgTempF: 32.5,
-    avgRainfallInch: 3.6,
-    humiditiy: 0.62
+    avgHighTempF: '39',
+    avgLowTempF: '26',
+    avgTempF: '32.5',
+    avgRainfallInch: '3.6',
+    humiditiy: '0.62'
   },
   {
     id: 9,
     cityId: 1,
     month: 9,
-    avgHighTempF: 84,
-    avgLowTempF: 66,
-    avgTempF: 75,
-    avgRainfallInch: 0.01,
-    humiditiy: 0.65
+    avgHighTempF: '84',
+    avgLowTempF: '66',
+    avgTempF: '75',
+    avgRainfallInch: '0.01',
+    humiditiy: '0.65'
   },
   {
     id: 10,
     cityId: 1,
     month: 10,
-    avgHighTempF: 68,
-    avgLowTempF: 48,
-    avgTempF: 58,
-    avgRainfallInch: 3.1,
-    humiditiy: 0.6
+    avgHighTempF: '68',
+    avgLowTempF: '48',
+    avgTempF: '58',
+    avgRainfallInch: '3.1',
+    humiditiy: '0.6'
   },
   {
     id: 11,
     cityId: 1,
     month: 11,
-    avgHighTempF: 85,
-    avgLowTempF: 69,
-    avgTempF: 77,
-    avgRainfallInch: 4.6,
-    humiditiy: 0.7
+    avgHighTempF: '85',
+    avgLowTempF: '69',
+    avgTempF: '77',
+    avgRainfallInch: '4.6',
+    humiditiy: '0.7'
   },
   {
     id: 12,
     cityId: 1,
     month: 12,
-    avgHighTempF: 39,
-    avgLowTempF: 26,
-    avgTempF: 32.5,
-    avgRainfallInch: 3.6,
-    humiditiy: 0.62
+    avgHighTempF: '39',
+    avgLowTempF: '26',
+    avgTempF: '32.5',
+    avgRainfallInch: '3.6',
+    humiditiy: '0.62'
   }
 ];
 
@@ -319,25 +319,25 @@ const ageDemographics = [
     id: 1,
     cityId: 1,
     ageRange: '0-17',
-    percent: 22.5
+    percent: '22.5'
   },
   {
     id: 2,
     cityId: 1,
     ageRange: '18-34',
-    percent: 30.1
+    percent: '30.1'
   },
   {
     id: 3,
     cityId: 1,
     ageRange: '35-64',
-    percent: 35.2
+    percent: '35.2'
   },
   {
     id: 4,
     cityId: 1,
     ageRange: '65+',
-    percent: 12.2
+    percent: '12.2'
   }
 ];
 
@@ -346,25 +346,25 @@ const ethnicDemographics = [
     id: 1,
     cityId: 1,
     group: 'Hispanic or Latino',
-    percent: 48.5
+    percent: '48.5'
   },
   {
     id: 2,
     cityId: 1,
     group: 'White',
-    percent: 28.7
+    percent: '28.7'
   },
   {
     id: 3,
     cityId: 1,
     group: 'Asian',
-    percent: 11.8
+    percent: '11.8'
   },
   {
     id: 4,
     cityId: 1,
     group: 'Black or African American',
-    percent: 8.9
+    percent: '8.9'
   }
 ];
 
