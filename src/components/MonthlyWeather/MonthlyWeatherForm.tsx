@@ -76,6 +76,7 @@ export const MonthlyWeatherForm = ({
           id="month"
           value={month}
           onChange={(newMonth) => setMonth(newMonth)}
+          disabled={isLoading}
         />
       </div>
       <div>

@@ -22,6 +22,7 @@ type MonthSelectProps = {
   value: number | '';
   onChange: (selectedMonth: number) => void;
   placeholder?: string;
+  disabled?: boolean;
 };
 
 export const MonthSelect = ({
@@ -30,7 +31,8 @@ export const MonthSelect = ({
   className,
   value,
   onChange,
-  placeholder = '-- Select a Month --'
+  placeholder = '-- Select a Month --',
+  disabled = false
 }: MonthSelectProps) => {
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const selectedMonnth = parseInt(event.target.value, 10);
@@ -39,7 +41,14 @@ export const MonthSelect = ({
     }
   };
   return (
-    <select id={id} name={name} className={className} value={value} onChange={handleChange}>
+    <select
+      id={id}
+      name={name}
+      className={className}
+      value={value}
+      onChange={handleChange}
+      disabled={disabled}
+    >
       {placeholder && (
         <option value="" disabled>
           {placeholder}
