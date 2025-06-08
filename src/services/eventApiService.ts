@@ -32,18 +32,17 @@ export const createEvent = async (eventData: EventFormData): Promise<EventWithPl
     body: JSON.stringify(eventData)
   });
   if (!response.ok) {
-    let errorData;
+    let errorDetails = response.statusText;
     try {
-      errorData = await response.json();
-    } catch {
-      throw new Error(
-        `In createEvent - HTTP error status: ${response.status}, message: ${
-          errorData?.message || response.statusText
-        }`
-      );
+      const errorData = await response.json();
+      errorDetails = errorData?.message || errorData?.error || response.statusText;
+    } catch (error) {
+      console.error('Could not parse error response JSON:', error);
     }
+    throw new Error(
+      `In createEvent - HTTP error status: ${response.status}, message: ${errorDetails}`
+    );
   }
-  console.log('createEvent before response.json()');
 
   const data = await response.json();
   return data as EventWithPlaceDetails;

@@ -1,13 +1,20 @@
-import { Place } from '@prisma/client';
+import { Neighborhood, Place } from '@prisma/client';
 
 type PlacesListProps = {
   places: Place[];
+  neighborhoods: Neighborhood[];
   onEdit: (data: Place) => void;
   onDelete: (id: number) => void;
   isLoadingDelete: number | null;
 };
 
-export const PlacesList = ({ places, onEdit, onDelete, isLoadingDelete }: PlacesListProps) => {
+export const PlacesList = ({
+  places,
+  neighborhoods,
+  onEdit,
+  onDelete,
+  isLoadingDelete
+}: PlacesListProps) => {
   if (!places.length) {
     return <p>No places yet. Find somewhere to go!</p>;
   }
@@ -22,7 +29,12 @@ export const PlacesList = ({ places, onEdit, onDelete, isLoadingDelete }: Places
             - {place.type}
           </p>
           <p>{place.description}</p>
-          <p>neighborhoodId: {place.neighborhoodId ? place.neighborhoodId : 'n/a'}</p>
+          <p>
+            neighborhood:{' '}
+            {place.neighborhoodId
+              ? neighborhoods.find((item) => item.id === place.neighborhoodId)?.name
+              : 'n/a'}
+          </p>
           <p>address: {place.address}</p>
           <div>
             <button type="button" onClick={() => onEdit(place)}>

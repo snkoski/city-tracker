@@ -1,48 +1,24 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { EventFormData, EventWithPlaceDetails } from '../../types';
 import { EventList } from './EventList';
-import {
-  createEvent,
-  deleteEvent,
-  fetchCityEvents,
-  updateEvent
-} from '../../services/eventApiService';
+import { createEvent, deleteEvent, updateEvent } from '../../services/eventApiService';
 import { EventForm } from './EventForm';
+import { Place } from '@prisma/client';
 
 type EventManagerProps = {
   cityId: number;
+  events: EventWithPlaceDetails[];
+  places: Place[];
+  setEventsCallback: (newEvents: EventWithPlaceDetails[]) => void;
 };
 
-export const EventManager = ({ cityId }: EventManagerProps) => {
-  const [events, setEvents] = useState<EventWithPlaceDetails[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+export const EventManager = ({ cityId, events, places, setEventsCallback }: EventManagerProps) => {
   const [error, setError] = useState<string | null>(null);
 
   const [isFormVisible, setIsFormVisible] = useState<boolean>(false);
   const [editingEvent, setEditingEvent] = useState<EventWithPlaceDetails | null>(null);
   const [isFormSubmitting, setIsFormSubmitting] = useState<boolean>(false);
   const [deletingEventId, setDeletingEventId] = useState<number | null>(null);
-
-  const loadEvents = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const data = await fetchCityEvents(cityId);
-      setEvents(data);
-    } catch (e) {
-      if (e instanceof Error) {
-        setError(e.message);
-      } else {
-        setError(`In loadEvents - an unknown error occured`);
-      }
-      console.error(`Failed to fetch Events: ${e}`);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [cityId]);
-
-  useEffect(() => {
-    loadEvents();
-  }, [loadEvents]);
 
   const handleSubmit = async (data: EventFormData, id?: number) => {
     console.log('actual start of handle submit');
@@ -52,14 +28,12 @@ export const EventManager = ({ cityId }: EventManagerProps) => {
     try {
       if (id) {
         const updated = await updateEvent(data, id);
-        setEvents((previousEvents) =>
-          previousEvents.map((event) => (event.id === id ? updated : event))
-        );
+        setEventsCallback(events.map((event) => (event.id === id ? updated : event)));
       } else {
         console.log('handle submit start');
 
         const created = await createEvent(data);
-        setEvents((previousEvents) => [...previousEvents, created]);
+        setEventsCallback([...events, created]);
         console.log('handle submit after setEvents');
       }
       setIsFormVisible(false);
@@ -82,7 +56,7 @@ export const EventManager = ({ cityId }: EventManagerProps) => {
       setError(null);
       try {
         await deleteEvent(id);
-        setEvents((previousEvents) => previousEvents.filter((event) => event.id !== id));
+        setEventsCallback(events.filter((event) => event.id !== id));
       } catch (error) {
         if (error instanceof Error) {
           setError(error.message);
@@ -112,8 +86,6 @@ export const EventManager = ({ cityId }: EventManagerProps) => {
     setError(null);
   };
 
-  if (isLoading && !events.length) return <p>Loading Events...</p>;
-
   return (
     <div>
       {error && <p>Error: {error}</p>}
@@ -129,6 +101,7 @@ export const EventManager = ({ cityId }: EventManagerProps) => {
           isLoading={isFormSubmitting}
           initialData={editingEvent}
           cityId={cityId}
+          places={places}
         />
       )}
       <EventList

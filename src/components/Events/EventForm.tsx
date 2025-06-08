@@ -1,6 +1,7 @@
-import { Event } from '@prisma/client';
+import { Event, Place } from '@prisma/client';
 import { FormEvent, useEffect, useState } from 'react';
 import { EventFormData } from '../../types';
+import { SelectInput } from '../Inputs/SelectInput';
 
 type EventFormProps = {
   onSubmit: (data: EventFormData, id?: number) => Promise<void>;
@@ -8,6 +9,7 @@ type EventFormProps = {
   initialData?: Event | null;
   isLoading: boolean;
   cityId: number;
+  places: Place[];
 };
 
 export const EventForm = ({
@@ -15,11 +17,12 @@ export const EventForm = ({
   onCancel,
   initialData,
   isLoading,
-  cityId
+  cityId,
+  places
 }: EventFormProps) => {
-  const [placeId, setPlace] = useState<number | null>(null);
+  const [placeId, setPlaceId] = useState<number | null>(null);
   const [name, setName] = useState<string>('');
-  const [dateTimeString, setDateTimeString] = useState<string>('');
+  const [dateTimeString, setDateTimeString] = useState<string | null>('');
   const [startTimeString, setStartTimeString] = useState<string>('');
   const [endTimeString, setEndTimeString] = useState<string>('');
   const [details, setDetails] = useState<string>('');
@@ -30,16 +33,16 @@ export const EventForm = ({
 
   useEffect(() => {
     if (initialData) {
-      setPlace(initialData.placeId);
+      setPlaceId(initialData.placeId);
       setName(initialData.name);
-      setDateTimeString(initialData.date.toString());
+      setDateTimeString(initialData.date?.toString() || null);
       setStartTimeString(initialData.startTime?.toString() || '');
       setEndTimeString(initialData.endTime?.toString() || '');
       setDetails(initialData.details || '');
       setWebsite(initialData.website || '');
       setTicketUrl(initialData.ticketUrl || '');
     } else {
-      setPlace(null);
+      setPlaceId(null);
       setName('');
       setDateTimeString('');
       setStartTimeString('');
@@ -50,17 +53,22 @@ export const EventForm = ({
     }
   }, [initialData, cityId]);
 
+  const PlaceOptions = places.map((place) => ({
+    value: place.id,
+    label: place.name
+  }));
+
   const handleSubmit = async (event: FormEvent) => {
     console.log('event form handle submit start');
 
     event.preventDefault();
-    if (!name || !dateTimeString) {
-      alert("How can I go if I don't have basic information like a name or a date you goober...");
+    if (!name) {
+      alert("How can I go if I don't have basic information like a name you goober...");
       return;
     }
     const formData: EventFormData = {
       name,
-      date: new Date(dateTimeString),
+      date: dateTimeString ? new Date(dateTimeString) : null,
       cityId,
       placeId: placeId || null,
       startTime: startTimeString ? new Date(startTimeString) : null,
@@ -95,10 +103,19 @@ export const EventForm = ({
           name="date"
           id="date"
           disabled={isLoading}
-          value={dateTimeString}
+          value={dateTimeString || ''}
           onChange={(e) => setDateTimeString(e.target.value)}
         />
       </div>
+      <SelectInput
+        name="places"
+        id="places"
+        value={placeId || ''}
+        onChange={(newPlaceId) => setPlaceId(newPlaceId)}
+        placeholder="-- Place --"
+        disabled={isLoading}
+        options={PlaceOptions}
+      />
       {/* <div>
         <label htmlFor="startTime">Start Time</label>
         <input

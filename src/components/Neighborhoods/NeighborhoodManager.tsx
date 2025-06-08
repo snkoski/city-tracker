@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { NeighborhoodForm } from './NeighborhoodForm';
 import { NeighborhoodList } from './NeighborhoodList';
 import { Neighborhood } from '@prisma/client';
@@ -6,44 +6,26 @@ import { NeighborhoodFormData } from '../../types';
 import {
   createNeighborhood,
   deleteNeighborhood,
-  fetchCityNeighborhoods,
   updateNeighborhood
 } from '../../services/neighborhoodApiService';
 
 type NeighborhoodManagerProps = {
   cityId: number;
+  neighborhoods: Neighborhood[];
+  setNeighborhoodsCallback: (newNeighborhoods: Neighborhood[]) => void;
 };
 
-export const NeighborhoodManager = ({ cityId }: NeighborhoodManagerProps) => {
-  const [neighborhoods, setNeighborhoods] = useState<Neighborhood[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+export const NeighborhoodManager = ({
+  cityId,
+  neighborhoods,
+  setNeighborhoodsCallback
+}: NeighborhoodManagerProps) => {
   const [error, setError] = useState<string | null>(null);
 
   const [isFormVisible, setIsFormVisible] = useState<boolean>(false);
   const [editingNeighborhood, setEditingNeighborhood] = useState<Neighborhood | null>(null);
   const [isFormSubmitting, setIsFormSubmitting] = useState<boolean>(false);
   const [deletingNeighborhoodId, setDeletingNeighborhoodId] = useState<number | null>(null);
-
-  const loadNeighborhoods = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const data = await fetchCityNeighborhoods(cityId);
-      setNeighborhoods(data);
-    } catch (e) {
-      if (e instanceof Error) {
-        setError(e.message);
-      } else {
-        setError(`In loadNeighborhoods - an unknown error occured`);
-      }
-      console.error(`Failed to fetch Neighborhoods: ${e}`);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [cityId]);
-
-  useEffect(() => {
-    loadNeighborhoods();
-  }, [loadNeighborhoods]);
 
   const handleSubmit = async (data: NeighborhoodFormData, id?: number) => {
     console.log('actual start of handle NEIGHBORHOOD submit');
@@ -53,16 +35,14 @@ export const NeighborhoodManager = ({ cityId }: NeighborhoodManagerProps) => {
     try {
       if (id) {
         const updated = await updateNeighborhood(data, id);
-        setNeighborhoods((previousNeighborhoods) =>
-          previousNeighborhoods.map((neighborhood) =>
-            neighborhood.id === id ? updated : neighborhood
-          )
+        setNeighborhoodsCallback(
+          neighborhoods.map((neighborhood) => (neighborhood.id === id ? updated : neighborhood))
         );
       } else {
         console.log('handle submit start');
 
         const created = await createNeighborhood(data);
-        setNeighborhoods((previousNeighborhoods) => [...previousNeighborhoods, created]);
+        setNeighborhoodsCallback([...neighborhoods, created]);
         console.log('handle submit after setNeighborhoods');
       }
       setIsFormVisible(false);
@@ -85,9 +65,7 @@ export const NeighborhoodManager = ({ cityId }: NeighborhoodManagerProps) => {
       setError(null);
       try {
         await deleteNeighborhood(id);
-        setNeighborhoods((previousNeighborhoods) =>
-          previousNeighborhoods.filter((neighborhood) => neighborhood.id !== id)
-        );
+        setNeighborhoodsCallback(neighborhoods.filter((neighborhood) => neighborhood.id !== id));
       } catch (error) {
         if (error instanceof Error) {
           setError(error.message);
@@ -117,7 +95,7 @@ export const NeighborhoodManager = ({ cityId }: NeighborhoodManagerProps) => {
     setError(null);
   };
 
-  if (isLoading && !neighborhoods.length) return <p>Loading Neighborhoods...</p>;
+  if (neighborhoods == null) return <p>Loading Neighborhoods...</p>;
 
   return (
     <div>

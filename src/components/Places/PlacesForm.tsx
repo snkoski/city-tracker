@@ -90,7 +90,7 @@ export const PlacesForm = ({
 
   return (
     <form onSubmit={handleSubmit}>
-      <h3>{isEditMode ? 'Edit Event' : 'New Event'}</h3>
+      <h3>{isEditMode ? 'Edit Place' : 'New Place'}</h3>
       <div>
         <label htmlFor="name"></label>
         <input
@@ -125,7 +125,7 @@ export const PlacesForm = ({
         />
       </div>
       <div>
-        <label htmlFor="neighborhoodId">neighborhoodId</label>
+        <label htmlFor="neighborhoodId">Neighborhood</label>
         <SelectInput
           name="neighborhoodId"
           id="neighborhoodId"

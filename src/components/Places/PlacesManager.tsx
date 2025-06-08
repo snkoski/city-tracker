@@ -1,50 +1,29 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { PlacesForm } from './PlacesForm';
 import { PlacesList } from './PlacesList';
 import { Neighborhood, Place } from '@prisma/client';
-import {
-  createPlace,
-  deletePlace,
-  fetchCityPlaces,
-  updatePlace
-} from '../../services/placeApiService';
+import { createPlace, deletePlace, updatePlace } from '../../services/placeApiService';
 import { PlaceFormData } from '../../types';
 
 type PlacesManagerProps = {
   cityId: number;
+  places: Place[];
   neighborhoods: Neighborhood[];
+  setPlacesCallback: (newPlaces: Place[]) => void;
 };
 
-export const PlacesManager = ({ cityId, neighborhoods }: PlacesManagerProps) => {
-  const [places, setPlaces] = useState<Place[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+export const PlacesManager = ({
+  cityId,
+  places,
+  neighborhoods,
+  setPlacesCallback
+}: PlacesManagerProps) => {
   const [error, setError] = useState<string | null>(null);
 
   const [isFormVisible, setIsFormVisible] = useState<boolean>(false);
   const [editingPlace, setEditingPlace] = useState<Place | null>(null);
   const [isFormSubmitting, setIsFormSubmitting] = useState<boolean>(false);
   const [deletingPlaceId, setDeletingPlaceId] = useState<number | null>(null);
-
-  const loadPlaces = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const data = await fetchCityPlaces(cityId);
-      setPlaces(data);
-    } catch (e) {
-      if (e instanceof Error) {
-        setError(e.message);
-      } else {
-        setError(`In loadPlaces - an unknown error occured`);
-      }
-      console.error(`Failed to fetch Places: ${e}`);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [cityId]);
-
-  useEffect(() => {
-    loadPlaces();
-  }, [loadPlaces]);
 
   const handleSubmit = async (data: PlaceFormData, id?: number) => {
     console.log('actual start of handle submit - data', data);
@@ -54,14 +33,13 @@ export const PlacesManager = ({ cityId, neighborhoods }: PlacesManagerProps) => 
     try {
       if (id) {
         const updated = await updatePlace(data, id);
-        setPlaces((previousPlaces) =>
-          previousPlaces.map((place) => (place.id === id ? updated : place))
-        );
+        const newPlacesArray = places.map((place) => (place.id === id ? updated : place));
+        setPlacesCallback(newPlacesArray);
       } else {
         console.log('handle submit start');
 
         const created = await createPlace(data);
-        setPlaces((previousPlaces) => [...previousPlaces, created]);
+        setPlacesCallback([...places, created]);
         console.log('handle submit after setPlaces');
       }
       setIsFormVisible(false);
@@ -84,7 +62,7 @@ export const PlacesManager = ({ cityId, neighborhoods }: PlacesManagerProps) => 
       setError(null);
       try {
         await deletePlace(id);
-        setPlaces((previousPlaces) => previousPlaces.filter((place) => place.id !== id));
+        setPlacesCallback(places.filter((place) => place.id !== id));
       } catch (error) {
         if (error instanceof Error) {
           setError(error.message);
@@ -114,7 +92,7 @@ export const PlacesManager = ({ cityId, neighborhoods }: PlacesManagerProps) => 
     setError(null);
   };
 
-  if (isLoading && !places.length) return <p>Loading Places...</p>;
+  if (places == null) return <p>Loading Places...</p>;
 
   return (
     <div>
@@ -136,6 +114,7 @@ export const PlacesManager = ({ cityId, neighborhoods }: PlacesManagerProps) => 
       )}
       <PlacesList
         places={places}
+        neighborhoods={neighborhoods}
         onEdit={handleEditPlaceClick}
         onDelete={handleDeletePlace}
         isLoadingDelete={deletingPlaceId}
